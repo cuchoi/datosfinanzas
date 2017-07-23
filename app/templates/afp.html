@@ -15,8 +15,7 @@
 
   <br>
   <div class="tab" id="diaria">
-    <h3> Rentabilidad diaria </h3>
-
+    <h2> Rentabilidad diaria ({{ayer}} -> {{hoy}})</h2> 
 	<table class="table">
 		<thead>
 		  <tr>
@@ -32,11 +31,11 @@
 		<tbody>
 		<tr>
 			<th>{{ afp.nombre }}</th>
-			<td>{{ afp.cuotaA }}</td>
-			<td>{{ afp.cuotaB }}</td>
-			<td>{{ afp.cuotaC }}</td>
-			<td>{{ afp.cuotaD }}</td>
-			<td>{{ afp.cuotaE }}</td>
+			<td>{{ afp.cuotaA }}%</td>
+			<td>{{ afp.cuotaB }}%</td>
+			<td>{{ afp.cuotaC }}%</td>
+			<td>{{ afp.cuotaD }}%</td>
+			<td>{{ afp.cuotaE }}%</td>
 		</tr>
 		</tbody>
 		{% endfor %}
