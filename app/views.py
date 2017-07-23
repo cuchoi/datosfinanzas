@@ -35,7 +35,7 @@ def afp():
             'nombre': afp.nombre.title(),
             'cuotaA': rentA,
             'cuotaB': '20',
-            'cuotaC': '10',
+            'cuotaC': '1',
             'cuotaD': '10',
             'cuotaE': '30'
                 })
