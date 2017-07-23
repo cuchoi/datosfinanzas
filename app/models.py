@@ -21,8 +21,8 @@ class AFP(db.Model):
 class Cuota(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     valor = db.Column(db.Float)
-    fecha = db.Column(db.Date)
-    fondo = db.Column(db.String(1))
+    fecha = db.Column(db.Date, index=True)
+    fondo = db.Column(db.String(1), index=True)
     AFP_id = db.Column(db.Integer, db.ForeignKey('AFP.id'))
     __table_args__ = (UniqueConstraint("fecha", "fondo","AFP_id"),)
 
@@ -32,9 +32,10 @@ class Cuota(db.Model):
 class Patrimonio(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     valor = db.Column(db.BigInteger)
-    fecha = db.Column(db.Date)
+    fecha = db.Column(db.Date, index=True)
+    fondo = db.Column(db.String(1), index=True)
     AFP_id = db.Column(db.Integer, db.ForeignKey('AFP.id'))
-    __table_args__ = (UniqueConstraint("fecha","AFP_id"),)
+    __table_args__ = (UniqueConstraint("fecha","fondo","AFP_id"),)
 
     def __repr__(self):
         return '<Patrimonio Valor: %r >' % (self.valor)
