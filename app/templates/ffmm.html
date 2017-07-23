@@ -1,0 +1,67 @@
+{% extends "contenido.html" %}
+
+{% block titulo %}
+   Fondos mutuos
+{% endblock titulo %}
+
+{% block menu %}
+    <li class="is-active"><a href="#chile">Banco de Chile</a></li>
+    <li><a href="#Santander">Santander</a></li>
+{% endblock menu %}
+
+{% block content %}
+
+  <br>
+  <div class="tab" id="chile">
+
+	<table class="table">
+		<thead>
+		  <tr>
+			<th>FFMM</th>
+			<th>Día</th>
+			<th>Mensual</th>
+			<th>Año</th>
+			 </tr>
+		</thead>
+		{% for fondo in BancoChile %}
+		<tbody>
+		<tr>
+			<th>{{ fondo.nombre }}</th>
+			<td>{{ fondo.cuotaA }}</td>
+			<td>{{ fondo.cuotaB }}</td>
+			<td>{{ fondo.cuotaC }}</td>
+		</tr>
+		</tbody>
+		{% endfor %}
+	</table>
+	</div>
+
+	<div class="tab" id="santander" style="display: none;">
+    <h3> Banco Santander </h3>
+
+	<table class="table" href="">
+		<thead>
+		  <tr>
+			<th>FFMM</th>
+			<th>A</th>
+			<th>B</th>
+			<th>C</th>
+			<th>D</th>
+			<th>E</th>
+		  </tr>
+		</thead>
+		{% for fondo in Santander %}
+		<tbody>
+		<tr>
+			<th>{{ fondo.nombre }}</th>
+			<td>{{ fondo.cuotaA }}</td>
+			<td>{{ fondo.cuotaB }}</td>
+			<td>{{ fondo.cuotaC }}</td>
+			<td>{{ fondo.cuotaD }}</td>
+			<td>{{ fondo.cuotaE }}</td>
+		</tr>
+		</tbody>
+		{% endfor %}
+	</table>
+	</div>
+{% endblock content %}

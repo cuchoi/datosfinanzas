@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block hero %}
+	<section class="hero is-primary">
+	<div class="container">
+    <div class="titulo columns is-vcentered">
+      <div class="column is-4">
+        <p class="title">{% block titulo %}{% endblock titulo %}</p>
+      </div>
+      <div class="column is-8">
+        <div class="bsa-cpc"></div>
+      </div>
+    </div>
+    </div>
+  <div class="container">
+    <nav class="tabs is-boxed">
+     <ul id="tabs">
+    {% block menu %}	
+    {% endblock %}
+    </ul>  
+  </div> 
+  </nav>
+  </div>
+ </section>
+{% endblock%}
+
+{% block content %}  
+{% endblock %}

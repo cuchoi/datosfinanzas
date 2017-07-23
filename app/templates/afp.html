@@ -1,0 +1,132 @@
+{% extends "contenido.html" %}
+
+{% block titulo %}
+   Rentabilidad AFP
+{% endblock titulo %}
+
+{% block menu %}
+    <li class="is-active"><a href="#diaria">Diaria</a></li>
+    <li><a href="#mensual">Mensual</a></li>
+    <li><a href="#anual">Anual</a></li>
+    <li><a href="#personalizado">Personalizado</a></li>
+{% endblock menu %}
+
+{% block content %}
+
+  <br>
+  <div class="tab" id="diaria">
+    <h3> Rentabilidad diaria </h3>
+
+	<table class="table">
+		<thead>
+		  <tr>
+			<th>AFP</th>
+			<th>A</th>
+			<th>B</th>
+			<th>C</th>
+			<th>D</th>
+			<th>E</th>
+		  </tr>
+		</thead>
+		{% for afp in AFPDiaria %}
+		<tbody>
+		<tr>
+			<th>{{ afp.nombre }}</th>
+			<td>{{ afp.cuotaA }}</td>
+			<td>{{ afp.cuotaB }}</td>
+			<td>{{ afp.cuotaC }}</td>
+			<td>{{ afp.cuotaD }}</td>
+			<td>{{ afp.cuotaE }}</td>
+		</tr>
+		</tbody>
+		{% endfor %}
+	</table>
+	</div>
+
+	<div class="tab" id="mensual" style="display: none;">
+    <h3> Rentabilidad Mensual </h3>
+
+	<table class="table" href="">
+		<thead>
+		  <tr>
+			<th>AFP</th>
+			<th>A</th>
+			<th>B</th>
+			<th>C</th>
+			<th>D</th>
+			<th>E</th>
+		  </tr>
+		</thead>
+		{% for afp in AFPMensual %}
+		<tbody>
+		<tr>
+			<th>{{ afp.nombre }}</th>
+			<td>{{ afp.cuotaA }}</td>
+			<td>{{ afp.cuotaB }}</td>
+			<td>{{ afp.cuotaC }}</td>
+			<td>{{ afp.cuotaD }}</td>
+			<td>{{ afp.cuotaE }}</td>
+		</tr>
+		</tbody>
+		{% endfor %}
+	</table>
+	</div>
+
+    <div class="tab" id="anual" style="display: none;">
+    <h3> Rentabilidad Anual </h3>
+
+	<table class="table" href="">
+		<thead>
+		  <tr>
+			<th>AFP</th>
+			<th>A</th>
+			<th>B</th>
+			<th>C</th>
+			<th>D</th>
+			<th>E</th>
+		  </tr>
+		</thead>
+		{% for afp in AFPMensual %}
+		<tbody>
+		<tr>
+			<th>{{ afp.nombre }}</th>
+			<td>{{ afp.cuotaA }}</td>
+			<td>{{ afp.cuotaB }}</td>
+			<td>{{ afp.cuotaC }}</td>
+			<td>{{ afp.cuotaD }}</td>
+			<td>{{ afp.cuotaE }}</td>
+		</tr>
+		</tbody>
+		{% endfor %}
+	</table>
+	</div>
+
+	 <div class="tab" id="personalizado" style="display: none;">
+    <h3> Personalizado </h3>
+
+	<table class="table" href="">
+		<thead>
+		  <tr>
+			<th>AFP</th>
+			<th>A</th>
+			<th>B</th>
+			<th>C</th>
+			<th>D</th>
+			<th>E</th>
+		  </tr>
+		</thead>
+		{% for afp in AFPMensual %}
+		<tbody>
+		<tr>
+			<th>{{ afp.nombre }}</th>
+			<td>{{ afp.cuotaA }}</td>
+			<td>{{ afp.cuotaB }}</td>
+			<td>{{ afp.cuotaC }}</td>
+			<td>{{ afp.cuotaD }}</td>
+			<td>{{ afp.cuotaE }}</td>
+		</tr>
+		</tbody>
+		{% endfor %}
+	</table>
+	</div>
+{% endblock content %}

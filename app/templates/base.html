@@ -1,0 +1,86 @@
+<html>
+<head>
+  {% if title %}
+  <title>{{ title }} - microblog</title>
+  {% else %}
+  <title>Welcome to microblog</title>
+  {% endif %}
+  <link href="/static/css/bulma.css" rel="stylesheet" media="screen">
+  <link href="/static/css/style.css" rel="stylesheet" media="screen">
+  <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+  <script
+  src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+  crossorigin="anonymous"></script>
+  <script src="{{ url_for('static', filename='js/bulma.js') }}"></script>   
+
+</head>
+<body>
+<div class="container">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="/index">
+        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMjAwJyBoZWlnaHQ9JzIwMCcgZmlsbD0iIzAwRDFCMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4yIiBiYXNlUHJvZmlsZT0idGlueSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB4bWw6c3BhY2U9InByZXNlcnZlIj48cGF0aCBkPSJNMzAsMzBjLTEuMzgxLDAtMi41LDEuMTE5LTIuNSwyLjVTMjguNjE5LDM1LDMwLDM1aDcuNXYyLjVjMCwxLjM4MSwxLjExOSwyLjUsMi41LDIuNXMyLjUtMS4xMTksMi41LTIuNVYzNUg0NSAgIGM0LjEzNiwwLDcuNS0zLjM2NCw3LjUtNy41UzQ5LjEzNiwyMCw0NSwyMGgtMi41di01SDUwYzEuMzgxLDAsMi41LTEuMTE5LDIuNS0yLjVTNTEuMzgxLDEwLDUwLDEwaC03LjVWNy41ICAgQzQyLjUsNi4xMTksNDEuMzgxLDUsNDAsNXMtMi41LDEuMTE5LTIuNSwyLjVWMTBIMzVjLTQuMTM2LDAtNy41LDMuMzY0LTcuNSw3LjVTMzAuODY0LDI1LDM1LDI1aDIuNXY1SDMweiBNNDIuNSwyNUg0NSAgIGMxLjM3OSwwLDIuNSwxLjEyMiwyLjUsMi41UzQ2LjM3OSwzMCw0NSwzMGgtMi41VjI1eiBNMzUsMjBjLTEuMzc5LDAtMi41LTEuMTIyLTIuNS0yLjVTMzMuNjIxLDE1LDM1LDE1aDIuNXY1SDM1eiIvPjxwYXRoIGQ9Ik05MCwzMEg2MGMtMS4wMTEsMC0xLjkyMywwLjYwOS0yLjMxLDEuNTQzYy0wLjM4NywwLjkzNC0wLjE3MywyLjAwOSwwLjU0MiwyLjcyNGw4LjIzMiw4LjIzMkw1MCw1OC45NjRMMzEuNzY4LDQwLjczMiAgIGMtMC45NzctMC45NzctMi41NTktMC45NzctMy41MzUsMGwtMjAsMjBjLTAuOTc3LDAuOTc2LTAuOTc3LDIuNTU5LDAsMy41MzVsOS4yNjgsOS4yNjhWOTIuNWMwLDEuMzgxLDEuMTE5LDIuNSwyLjUsMi41ICAgczIuNS0xLjExOSwyLjUtMi41VjczLjUzNWw1LTVWOTIuNWMwLDEuMzgxLDEuMTE5LDIuNSwyLjUsMi41czIuNS0xLjExOSwyLjUtMi41VjY4LjUzNmw1LDVWOTIuNWMwLDEuMzgxLDEuMTE5LDIuNSwyLjUsMi41ICAgczIuNS0xLjExOSwyLjUtMi41Vjc4LjUzNWw1LDVWOTIuNWMwLDEuMzgxLDEuMTE5LDIuNSwyLjUsMi41czIuNS0xLjExOSwyLjUtMi41di04Ljk2NWw1LTVWOTIuNWMwLDEuMzgxLDEuMTE5LDIuNSwyLjUsMi41ICAgczIuNS0xLjExOSwyLjUtMi41VjczLjUzNWw1LTVWOTIuNWMwLDEuMzgxLDEuMTE5LDIuNSwyLjUsMi41czIuNS0xLjExOSwyLjUtMi41VjYzLjUzNmw1LTVWOTIuNWMwLDEuMzgxLDEuMTE5LDIuNSwyLjUsMi41ICAgczIuNS0xLjExOSwyLjUtMi41VjU4LjUzNmw1LjczMiw1LjczMmMwLjcxNSwwLjcxNSwxLjc4OSwwLjkzMiwyLjcyNSwwLjU0MmMwLjkzNC0wLjM4NywxLjU0My0xLjI5OCwxLjU0My0yLjMxdi0zMCAgIEM5Mi41LDMxLjExOSw5MS4zODEsMzAsOTAsMzB6IE04Ny41LDU2LjQ2NGwtNS43My01LjcyOWgwQzgxLjMxNyw1MC4yODEsODAuNjkyLDUwLDgwLDUwcy0xLjMxNywwLjI4MS0xLjc3LDAuNzM1aDBsLTkuOTk2LDkuOTk2ICAgbC0wLjAwMywwLjAwM2wtOS45OTgsOS45OTdsLTAuMDAxLDAuMDAxTDUwLDc4Ljk2NGwtOC4yMzEtOC4yMzFsLTAuMDAyLTAuMDAybC05Ljk5Ni05Ljk5NmgwQzMxLjMxNyw2MC4yODEsMzAuNjkyLDYwLDMwLDYwICAgcy0xLjMxNywwLjI4MS0xLjc3LDAuNzM1aDBMMjAsNjguOTY0TDEzLjUzNSw2Mi41TDMwLDQ2LjAzNmwxOC4yMzIsMTguMjMyYzAuOTc3LDAuOTc3LDIuNTU5LDAuOTc3LDMuNTM1LDBsMjAtMjAgICBjMC45NzctMC45NzYsMC45NzctMi41NTksMC0zLjUzNUw2Ni4wMzUsMzVIODcuNVY1Ni40NjR6Ii8+PC9zdmc+" alt="Bulma: a modern CSS framework based on Flexbox" width="40" height="78">
+      </a>
+
+      <div class="navbar-menu" >
+        <div class="navbar-start">
+          <a class="navbar-item {% if request.path=='/index' %}menu-active{% endif %}" href="/index">
+            Home
+          </a>
+
+          <a class="navbar-item {% if request.path == '/afp'%}menu-active{% endif %}" href="/afp" >
+            Rentabilidad AFP 
+          </a>
+
+          <a class="navbar-item {% if request.path == '/ffmm'%}menu-active{% endif %}" href="/ffmm">
+            Fondos Mutuos
+          </a>
+
+          <a class="navbar-item {% if request.path == '/contacto'%}menu-active{% endif %}" href="/contacto">
+            Contacto
+          </a>
+
+        </div>
+      </div>
+
+      <div class="navbar-burger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+</div>
+
+  {% block hero %}{% endblock %}
+
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <div class="notification">
+    <button class="delete"></button>
+    <ul>
+      {% for message in messages %}
+      <li>{{ message }} </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+  {% endwith %}
+
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+        {% block content %}{% endblock %}
+      </div>
+      <div class="column">
+       {% block sidebar %}{% endblock %}
+     </div>
+   </div>
+ </div>
+
+</body>
+</html>

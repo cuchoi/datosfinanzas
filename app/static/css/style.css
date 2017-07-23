@@ -1,0 +1,11 @@
+.menu-active {
+  color: hsl(171, 100%, 41%);
+}
+
+.titulo{
+	padding: 25px;
+}
+
+.hero ul {
+    margin-left: 20px !important;
+}
