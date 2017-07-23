@@ -31,10 +31,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   $('#tabs li').click(function() {
-    var href = $(this).children().attr('href');
-    console.log(href);
+    var tabs= $(this).children().attr('data-tab');
+    console.log(tabs)
     $('.tab').hide();
-    $(href).show();
+    $(tabs).show();
     $('#tabs li').removeClass( "is-active" );
     $(this).addClass( "is-active" );
   });

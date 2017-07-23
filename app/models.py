@@ -11,7 +11,7 @@ class Usuario(db.Model):
 
 class AFP(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    nombre = db.Column(db.String(64), index=True, unique=True)
+    nombre = db.Column(db.String(64), index=True, unique=True, nullable=False)
     cuotas = db.relationship('Cuota', backref='afp', lazy='dynamic')
     patrimonio = db.relationship('Patrimonio', backref='afp', lazy='dynamic')
 
@@ -20,9 +20,9 @@ class AFP(db.Model):
 
 class Cuota(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    valor = db.Column(db.Float)
-    fecha = db.Column(db.Date, index=True)
-    fondo = db.Column(db.String(1), index=True)
+    valor = db.Column(db.Float, nullable=False)
+    fecha = db.Column(db.Date, index=True, nullable=False)
+    fondo = db.Column(db.String(1), index=True, nullable=False)
     AFP_id = db.Column(db.Integer, db.ForeignKey('AFP.id'))
     __table_args__ = (UniqueConstraint("fecha", "fondo","AFP_id"),)
 
@@ -31,10 +31,10 @@ class Cuota(db.Model):
 
 class Patrimonio(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    valor = db.Column(db.BigInteger)
-    fecha = db.Column(db.Date, index=True)
-    fondo = db.Column(db.String(1), index=True)
-    AFP_id = db.Column(db.Integer, db.ForeignKey('AFP.id'))
+    valor = db.Column(db.BigInteger,nullable=False)
+    fecha = db.Column(db.Date, index=True,nullable=False)
+    fondo = db.Column(db.String(1), index=True,nullable=False)
+    AFP_id = db.Column(db.Integer, db.ForeignKey('AFP.id'),nullable=False)
     __table_args__ = (UniqueConstraint("fecha","fondo","AFP_id"),)
 
     def __repr__(self):

@@ -20,33 +20,82 @@ def index():
 def afp():
  
     usuario = {'nombre':'Fernando'}
-    hoy = date(2017, 6, 30)
-    ayer = date(2017, 6, 30)-timedelta(1)
-    mes = date(2017, 6, 30)-timedelta(30)
-    
-    AFPDiaria = []
-    for afp in AFP.query.all():
-        cuotaAHoy = afp.cuotas.filter(and_(Cuota.fecha == hoy, Cuota.fondo =="A")).first()
-        cuotaAAyer = afp.cuotas.filter(and_(Cuota.fecha == ayer, Cuota.fondo =="A")).first()
-        rentA = round(((cuotaAHoy.valor/cuotaAAyer.valor)-1)*100,2) 
 
+    # Hoy en realidad es el último día para el cual tenemos datos
+    hoy = getUltimaFechaCuota()
+    ayer = getUltimaFechaCuota("", hoy-timedelta(1))
+    mesTD = getUltimaFechaCuota("",hoy.replace(day=1)) 
+    anioTD = getUltimaFechaCuota("",hoy.replace(day=1).replace(month=1)) 
+
+    AFPDiaria = []
+    AFPMesTD = []
+    AFPAnioTD = []
+
+    rentabilidadDiaria = {}
+    rentabilidadMensual = {}
+    rentabilidadAnual = {}
+
+    for afp in AFP.query.all():
+        ultimaFechaAFP = getUltimaFechaCuota(afp.nombre)
+        
+        for f in fondos:
+            cuotaHoy = afp.cuotas.filter(and_(Cuota.fecha == hoy, Cuota.fondo == f)).first()
+            cuotaAyer = afp.cuotas.filter(and_(Cuota.fecha == ayer, Cuota.fondo == f)).first()
+
+            cuotaMesTD = afp.cuotas.filter(and_(Cuota.fecha == mesTD, Cuota.fondo == f)).first()
+
+            cuotaAnioTD = afp.cuotas.filter(and_(Cuota.fecha == anioTD, Cuota.fondo == f)).first()
+
+            if cuotaHoy == None or cuotaAyer == None:
+                rentabilidadDiaria[f]="S/I"
+            else:
+                rentabilidadDiaria[f] = "%.2f" % round(((cuotaHoy.valor/cuotaAyer.valor)-1)*100,2) +"%"
+
+            if cuotaHoy == None or cuotaMesTD == None:
+                rentabilidadMensual[f]="S/I"
+            else:
+                rentabilidadMensual[f] = "%.2f" % round(((cuotaHoy.valor/cuotaMesTD.valor)-1)*100,2) +"%"
+
+            if cuotaHoy == None or cuotaAnioTD == None:
+                rentabilidadAnual[f]="S/I"
+            else:
+                rentabilidadAnual[f] = "%.2f" % round(((cuotaHoy.valor/cuotaAnioTD.valor)-1)*100,2) +"%"
 
         AFPDiaria.append({ 
             'nombre': afp.nombre.title(),
-            'cuotaA': rentA,
-            'cuotaB': '20',
-            'cuotaC': '1',
-            'cuotaD': '10',
-            'cuotaE': '30'
+            'cuotaA': rentabilidadDiaria['A'],
+            'cuotaB': rentabilidadDiaria['B'],
+            'cuotaC': rentabilidadDiaria['C'],
+            'cuotaD': rentabilidadDiaria['D'],
+            'cuotaE': rentabilidadDiaria['E']
+                })
+        AFPMesTD.append({ 
+            'nombre': afp.nombre.title(),
+            'cuotaA': rentabilidadMensual['A'],
+            'cuotaB': rentabilidadMensual['B'],
+            'cuotaC': rentabilidadMensual['C'],
+            'cuotaD': rentabilidadMensual['D'],
+            'cuotaE': rentabilidadMensual['E']
+                })
+        AFPAnioTD.append({ 
+            'nombre': afp.nombre.title(),
+            'cuotaA': rentabilidadAnual['A'],
+            'cuotaB': rentabilidadAnual['B'],
+            'cuotaC': rentabilidadAnual['C'],
+            'cuotaD': rentabilidadAnual['D'],
+            'cuotaE': rentabilidadAnual['E']
                 })
 
     return render_template('afp.html',
                             usuario = usuario,
                             AFPDiaria = AFPDiaria, 
+                            AFPMensual = AFPMesTD,
+                            mesTD =mesTD,
+                            AFPAnual = AFPAnioTD,
+                            anioTD = anioTD,
                             hoy = hoy,
                             ayer = ayer,
-                            request=request)    
-
+                            request=request)   
 
 @app.route('/ffmm')
 def ffmm():
@@ -86,6 +135,22 @@ def login():
                            title='Sign In',
                            form=form,
                            providers=app.config['OPENID_PROVIDERS'])
+
+# date: Date of refence. Empty: Last date
+def getUltimaFechaCuota(afp = "", date= ""):
+    if date:
+        if afp:
+            closest = Cuota.query.filter(_and(AFP.nombre == afp, Cuota.fecha<=date)).order_by(Cuota.fecha.desc()).first()
+        else:
+            closest = Cuota.query.filter(Cuota.fecha<=date).order_by(Cuota.fecha.desc()).first()
+
+    else:
+        if afp:
+            closest = Cuota.query.filter(AFP.nombre == afp).order_by(Cuota.fecha.desc()).first()
+        else:
+            closest = Cuota.query.order_by(Cuota.fecha.desc()).first()
+
+    return closest.fecha
 
 @app.route('/load_csv')
 def load_csv():
