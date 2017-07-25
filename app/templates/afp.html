@@ -1,23 +1,29 @@
 {% extends "contenido.html" %}
+{% block subscribe_script %}
+ <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+ <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+ <script src="{{ url_for('static', filename='js/afp.js') }}"></script>   
+{% endblock %}
+
 
 {% block titulo %}
    Rentabilidad AFP
 {% endblock titulo %}
 
 {% block menu %}
-    <li class="is-active"><a data-tab="#ultimainformacion">Hoy</a></li>
-    <li><a data-tab="#ayer">Ayer</a></li>
-    <li><a data-tab="#anual">Anual</a></li>
-    <li><a data-tab="#personalizado">Personalizado</a></li>
+    <li {% if active == "hoy" %}class='is-active'{% endif %}><a data-tab="#hoy">Hoy</a></li>
+    <li {% if active == 'ayer' %}class="is-active"{% endif %}><a data-tab="#ayer">Ayer</a></li>
+    <li {% if active == 'anual' %}class="is-active"{% endif %}><a data-tab="#anual">Anual</a></li>
+    <li {% if active == 'personalizado' %}class="is-active"{% endif %}><a data-tab="#personalizado">Personalizado</a></li>
 {% endblock menu %}
 
 {% block content %}
 
   <br>
-  <div class="tab" id="ultimainformacion">
+  <div class="tab" id="hoy">
     <div class="titlewrapper">
     <div><h3 class="is-pulled-left title is-4">Rentabilidad Diaria &#160;&#160;</h3></div>
-    <div><span class="tag is-info">{{ayer}}</span> - <span class="tag is-info">{{hoy}}</span></div>
+    <div><span class="tag is-info">{{ayer.strftime('%d-%m-%y')}}</span> - <span class="tag is-info">{{hoy.strftime('%d-%m-%y')}}</span></div>
 	</div>
 	<table class="table tablarentabilidad">
 		<thead>
@@ -45,8 +51,8 @@
 	</table>
 	<br>
     <div class="titlewrapper">
-    <div><h3 class="is-pulled-left title is-4">Rentabilidad Mensual&#160;&#160;</h3></div>
-    <div><span class="tag is-info">{{mesTD}}</span> - <span class="tag is-info">{{hoy}}</span></div>
+    <div><h3 class="is-pulled-left title is-4">Mes a la fecha&#160;&#160;</h3></div>
+    <div><span class="tag is-info">{{mesTD.strftime('%d-%m-%y')}}</span> - <span class="tag is-info">{{hoy.strftime('%d-%m-%y')}}</span></div>
 	</div>
 
 	<table class="table tablarentabilidad">
@@ -60,8 +66,8 @@
 			<th>E</th>
 		  </tr>
 		</thead>
-		{% for afp in AFPMensual %}
 		<tbody>
+		{% for afp in AFPMensual %}
 		<tr>
 			<th>{{ afp.nombre }}</th>
 			<td>{{ afp.cuotaA }}</td>
@@ -70,15 +76,13 @@
 			<td>{{ afp.cuotaD }}</td>
 			<td>{{ afp.cuotaE }}</td>
 		</tr>
+	    {% endfor %}
 		</tbody>
-		{% endfor %}
 	</table>
-	</div>
-
-    <div class="tab" id="anual" style="display: none;">
-    <div class="titlewrapper">
-    <div><h3 class="is-pulled-left title is-4">Anual&#160;&#160;</h3></div>
-    <div><span class="tag is-info">{{anioTD}}</span> - <span class="tag is-info">{{hoy}}</span></div>
+	<br>
+	<div class="titlewrapper">
+    <div><h3 class="is-pulled-left title is-4">Año a la fecha&#160;&#160;</h3></div>
+    <div><span class="tag is-info">{{anioTD.strftime('%d-%m-%y')}}</span> - <span class="tag is-info">{{hoy.strftime('%d-%m-%y')}}</span></div>
 	</div>
 	<table class="table">
 		<thead>
@@ -91,9 +95,9 @@
 			<th>E</th>
 		  </tr>
 		</thead>
+		<tbody>
+		<tr>
 		{% for afp in AFPAnual %}
-		<tbody>
-		<tr>
 			<th>{{ afp.nombre }}</th>
 			<td>{{ afp.cuotaA }}</td>
 			<td>{{ afp.cuotaB }}</td>
@@ -101,17 +105,23 @@
 			<td>{{ afp.cuotaD }}</td>
 			<td>{{ afp.cuotaE }}</td>
 		</tr>
-		</tbody>
 		{% endfor %}
+		</tbody>
 	</table>
 	</div>
 
-	 <div class="tab" id="personalizado" style="display: none;">
+	<div class="tab" id="personalizado">
     <div class="titlewrapper">
-    <div><h3 class="is-pulled-left title is-4">Anual&#160;&#160;</h3></div>
-    <div><span class="tag is-info">{{aniopasado}}</span> - <span class="tag is-info">{{hoy}}</span></div>
+    <div><h3 class="title is-4">Personalizado&#160;&#160;</h3></div>
 	</div>
-	<table class="table">
+	<br>
+    
+     <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+    &nbsp;
+    <span></span> 
+    </div>
+    <br>
+	<table id=tablapersonalizado class="table">
 		<thead>
 		  <tr>
 			<th>AFP</th>
@@ -122,18 +132,9 @@
 			<th>E</th>
 		  </tr>
 		</thead>
-		{% for afp in AFPMensual %}
 		<tbody>
-		<tr>
-			<th>{{ afp.nombre }}</th>
-			<td>{{ afp.cuotaA }}</td>
-			<td>{{ afp.cuotaB }}</td>
-			<td>{{ afp.cuotaC }}</td>
-			<td>{{ afp.cuotaD }}</td>
-			<td>{{ afp.cuotaE }}</td>
-		</tr>
+
 		</tbody>
-		{% endfor %}
 	</table>
 	</div>
 

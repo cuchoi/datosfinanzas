@@ -27,17 +27,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-    console.log("Click")
-
-
-  $('#tabs li').click(function() {
-    var tabs= $(this).children().attr('data-tab');
-    console.log(tabs)
-    $('.tab').hide();
-    $(tabs).show();
-    $('#tabs li').removeClass( "is-active" );
-    $(this).addClass( "is-active" );
-  });
-
 });
+
+
+
 

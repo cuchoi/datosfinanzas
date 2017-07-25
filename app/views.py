@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, request
+from flask import render_template, flash, redirect, request, jsonify
 from app import app, db
 from .forms import LoginForm
 from .models import AFP, Cuota, Patrimonio
@@ -16,8 +16,42 @@ def index():
     return render_template('index.html',
                             usuario=usuario)
 
+
+@app.route('/afp/personalizado/req', methods=['POST'])
+def request_personalizado():
+    inicio = datetime.strptime(request.form['inicio'], '%Y-%m-%d')
+    final = datetime.strptime(request.form['final'], '%Y-%m-%d')
+
+    inicio = getUltimaFechaCuota("",inicio)
+    final = getUltimaFechaCuota("",final)
+
+    rentabilidadPer = {}
+    AFPPersonalizado = []
+    for afp in AFP.query.all():
+        ultimaFechaAFP = getUltimaFechaCuota(afp.nombre)
+        for f in fondos:
+            cuotaFinal = afp.cuotas.filter(and_(Cuota.fecha == final, Cuota.fondo == f)).first()
+            cuotaInicio = afp.cuotas.filter(and_(Cuota.fecha == inicio, Cuota.fondo == f)).first()
+
+            if cuotaFinal == None or cuotaInicio == None:
+                rentabilidadPer[f]="S/I"
+            else:
+                rentabilidadPer[f] = "%.2f" % round(((cuotaFinal.valor/cuotaInicio.valor)-1)*100,2) +"%"
+
+        AFPPersonalizado.append({ 
+            'nombre': afp.nombre.title(),
+            'cuotaA': rentabilidadPer['A'],
+            'cuotaB': rentabilidadPer['B'],
+            'cuotaC': rentabilidadPer['C'],
+            'cuotaD': rentabilidadPer['D'],
+            'cuotaE': rentabilidadPer['E']
+                })
+
+    return jsonify(AFPPersonalizado)
+
 @app.route('/afp')
-def afp():
+@app.route('/afp/<tab>')
+def afp(tab = "hoy"):
  
     usuario = {'nombre':'Fernando'}
 
@@ -95,7 +129,8 @@ def afp():
                             anioTD = anioTD,
                             hoy = hoy,
                             ayer = ayer,
-                            request=request)   
+                            request=request,
+                            active=tab)   
 
 @app.route('/ffmm')
 def ffmm():
@@ -136,7 +171,7 @@ def login():
                            form=form,
                            providers=app.config['OPENID_PROVIDERS'])
 
-# date: Date of refence. Empty: Last date
+# date: Date of refence. Empty: Last in the database
 def getUltimaFechaCuota(afp = "", date= ""):
     if date:
         if afp:
@@ -152,7 +187,26 @@ def getUltimaFechaCuota(afp = "", date= ""):
 
     return closest.fecha
 
-@app.route('/load_csv')
+#@app.route('/scrape_cuotas_svs')
+def scrape_cuotas_svs():
+    import mechanicalsoup
+
+    browser = mechanicalsoup.StatefulBrowser(
+    soup_config={'features': 'lxml'}    )
+
+    browser.set_verbose(2)
+    url = "http://www.safp.cl/safpstats/stats/apps/vcuofon/vcfAFP.php?tf=A"
+    browser.open(url)
+    browser.select_form("vcf")
+    browser["ddVCF"]=19
+
+    resp = browser.submit_selected()
+
+    page = browser.get_current_page()
+
+    return ffmm()
+
+
 def load_csv():
     import csv
 
