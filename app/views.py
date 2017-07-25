@@ -19,26 +19,31 @@ def index():
 
 @app.route('/afp/personalizado/req', methods=['POST'])
 def request_personalizado():
-    inicio = datetime.strptime(request.form['inicio'], '%Y-%m-%d')
-    final = datetime.strptime(request.form['final'], '%Y-%m-%d')
+    try:
+        inicio = datetime.strptime(request.form['inicio'], '%Y-%m-%d')
+        final = datetime.strptime(request.form['final'], '%Y-%m-%d')
 
-    inicio = getUltimaFechaCuota("",inicio)
-    final = getUltimaFechaCuota("",final)
+        inicio = getUltimaFechaCuota("",inicio)
+        final = getUltimaFechaCuota("",final)
 
-    rentabilidadPer = {}
-    AFPPersonalizado = []
-    for afp in AFP.query.all():
-        ultimaFechaAFP = getUltimaFechaCuota(afp.nombre)
-        for f in fondos:
-            cuotaFinal = afp.cuotas.filter(and_(Cuota.fecha == final, Cuota.fondo == f)).first()
-            cuotaInicio = afp.cuotas.filter(and_(Cuota.fecha == inicio, Cuota.fondo == f)).first()
+        print(inicio)
+        print(final)
+        rentabilidadPer = {}
+        AFPPersonalizado = []
 
-            if cuotaFinal == None or cuotaInicio == None:
-                rentabilidadPer[f]="S/I"
-            else:
-                rentabilidadPer[f] = "%.2f" % round(((cuotaFinal.valor/cuotaInicio.valor)-1)*100,2) +"%"
 
-        AFPPersonalizado.append({ 
+        for afp in AFP.query.all():
+            ultimaFechaAFP = getUltimaFechaCuota(afp.nombre)
+            for f in fondos:
+                cuotaFinal = afp.cuotas.filter(and_(Cuota.fecha == final, Cuota.fondo == f)).first()
+                cuotaInicio = afp.cuotas.filter(and_(Cuota.fecha == inicio, Cuota.fondo == f)).first()
+
+                if cuotaFinal == None or cuotaInicio == None:
+                    rentabilidadPer[f]="S/I"
+                else:
+                    rentabilidadPer[f] = "%.2f" % round(((cuotaFinal.valor/cuotaInicio.valor)-1)*100,2) +"%"
+
+            AFPPersonalizado.append({ 
             'nombre': afp.nombre.title(),
             'cuotaA': rentabilidadPer['A'],
             'cuotaB': rentabilidadPer['B'],
@@ -46,6 +51,10 @@ def request_personalizado():
             'cuotaD': rentabilidadPer['D'],
             'cuotaE': rentabilidadPer['E']
                 })
+
+    except Exception as e:
+        render_template("500.html", error = str(e))
+
 
     return jsonify(AFPPersonalizado)
 

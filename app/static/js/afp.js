@@ -39,7 +39,6 @@
 
     function cb(start, end) {
         $('#reportrange span').html(start.format('D/MM/YY') + ' - ' + end.format('D/MM/YY'));
-        $('#tablapersonalizado tbody tr').remove();
     }
 
      $('#reportrange').daterangepicker({
@@ -63,6 +62,7 @@
 $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
     var jqxhr = $.post( "/afp/personalizado/req", { inicio: picker.startDate.format('YYYY-MM-DD'), final: picker.endDate.format('YYYY-MM-DD') },  function(data) {
             console.log( "success" );
+             $('#tablapersonalizado tbody tr').remove();
 
             data.forEach(function(afp) {
              console.log(afp);
