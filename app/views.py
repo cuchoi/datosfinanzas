@@ -31,7 +31,6 @@ def request_personalizado():
         rentabilidadPer = {}
         AFPPersonalizado = []
 
-
         for afp in AFP.query.all():
             ultimaFechaAFP = getUltimaFechaCuota(afp.nombre)
             for f in fondos:
