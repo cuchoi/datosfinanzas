@@ -3,9 +3,15 @@
  if ($('.tab').length){
      var tabSeleccionado = $("#tabs li.is-active");
      var tabAMostrar = tabSeleccionado.children().attr('data-tab');
+    var sideAMostrar = tabSeleccionado.children().attr('data-side');
+
 
      $('.tab').hide();
      $(tabAMostrar).show();
+
+     $('.side').hide();
+     $(sideAMostrar).show();
+
 
      $('#tabs li').removeClass("is-active");
      tabSeleccionado.addClass( "is-active" );
