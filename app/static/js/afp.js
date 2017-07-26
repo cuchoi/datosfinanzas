@@ -94,10 +94,10 @@
                 }
 
                 colObj.eq(0).css({'background-color':'rgba(215,48,39,0.2)'});
-                colObj.eq(1).css({'background-color':'rgba(252,141,89,0.2)'});
+               // colObj.eq(1).css({'background-color':'rgba(252,141,89,0.2)'});
                // colObj.eq(2).css({'background-color':'rgba(254,224,139,0.2)'});
                // colObj.eq(3).css({'background-color':'rgba(217,239,139,0.2)'});
-               // colObj.eq(4).css({'background-color':'rgba(145,207,96,0.2)'});
+                colObj.eq(4).css({'background-color':'rgba(145,207,96,0.2)'});
                 colObj.eq(5).css({'background-color':'rgba(26,152,80,0.2)'});
               }
 
