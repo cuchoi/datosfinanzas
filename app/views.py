@@ -49,6 +49,7 @@ def request_personalizado():
             'cuotaE': rentabilidadPer['E']
                 })
 
+
     except Exception as e:
         render_template("500.html", error = str(e))
 

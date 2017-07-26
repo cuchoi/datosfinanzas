@@ -83,7 +83,7 @@
     <div><h3 class="is-pulled-left title is-4">Año a la fecha&#160;&#160;</h3></div>
     <div><span class="tag is-info">{{anioTD.strftime('%d-%m-%y')}}</span> - <span class="tag is-info">{{hoy.strftime('%d-%m-%y')}}</span></div>
 	</div>
-	<table class="table">
+	<table class="table tablarentabilidad">
 		<thead>
 		  <tr>
 			<th>AFP</th>
@@ -120,7 +120,7 @@
     <span></span> 
     </div>
     <br>
-	<table id=tablapersonalizado class="table">
+	<table id=tablapersonalizado class="table tablarentabilidad">
 		<thead>
 		  <tr>
 			<th>AFP</th>
@@ -143,14 +143,14 @@
 	
 	{% block sidebar %}
 	<br>
-	<div class="side" id="personalizadoside">
+	<div class="side rentabilidad" id="personalizadoside">
 		<article class="message is-info">
 		  <div class="message-header">
 		    <p>Ojo</p>
 		    <button class="delete"></button>
 		  </div>
 		  <div class="message-body">
-		    Si seleccionas <strong>un fin de semana, otro día no hábil o un día para el que no exista información</strong>, te mostraremos el día anterior más cercano. Por ejemplo, si seleccionas de un Domingo a un Lunes, te verás la rentabilidad de Viernes a Lunes.
+		    Si seleccionas <strong>un fin de semana, otro día no hábil o un día para el que no exista información</strong>, te mostraremos el día anterior más cercano. Por ejemplo, si seleccionas de un Domingo a un Lunes verás la rentabilidad del Viernes a Lunes.
 		  </div>
 		</article>
 	</div>
