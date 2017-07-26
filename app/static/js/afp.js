@@ -53,7 +53,10 @@
 
       function cb(start, end) {
         $('#reportrange span').html(start.format('D/MM/YY') + ' - ' + end.format('D/MM/YY'));
+
+
     }
+
 
     $('#reportrange').daterangepicker({
         locale: {
@@ -88,7 +91,7 @@
                 <td>`+afp["cuotaE"]+`</td>
                 </tr>`);
            });
-            
+
         })
         .done(function() {
             console.log( "second success" );
@@ -103,6 +106,8 @@
     });
 
     cb(start, end);
+        
+
 
 });
 
@@ -837,7 +842,7 @@
                 html += '<th></th>';
 
             if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left')) {
-                html += '<th class="prev available">' + (ltr ? this.icons.arrowLeft : this.icons.arrowRight) + '</th>';
+                html += '<th class="prev available">' + (ltr ? "<" : ">") + '</th>';
             } else {
                 html += '<th></th>';
             }
@@ -879,7 +884,7 @@
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
             if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker)) {
-                html += '<th class="next available">' + (ltr ? this.icons.arrowRight : this.icons.arrowLeft) + '</th>';
+                html += '<th class="next available">' + (ltr ? ">" : "<") + '</th>';
             } else {
                 html += '<th></th>';
             }

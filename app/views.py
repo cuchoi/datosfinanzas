@@ -14,7 +14,7 @@ def index():
     usuario = {'nombre':'Fernando'}
 
     return render_template('index.html',
-                            usuario=usuario)
+                        usuario=usuario)
 
 
 @app.route('/afp/personalizado/req', methods=['POST'])
@@ -26,8 +26,6 @@ def request_personalizado():
         inicio = getUltimaFechaCuota("",inicio)
         final = getUltimaFechaCuota("",final)
 
-        print(inicio)
-        print(final)
         rentabilidadPer = {}
         AFPPersonalizado = []
 
@@ -53,7 +51,6 @@ def request_personalizado():
 
     except Exception as e:
         render_template("500.html", error = str(e))
-
 
     return jsonify(AFPPersonalizado)
 
