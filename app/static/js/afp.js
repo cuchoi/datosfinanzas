@@ -12,12 +12,20 @@
      };
 
 
+    $('button.delete').click(function(){
+        $(this).parent().parent().addClass('is-hidden');
+        return false;
+    });
+
   $('#tabs li').click(function() {
     var tabAMostrar= $(this).children().attr('data-tab');
-    
+    var sideAMostrar= $(this).children().attr('data-side');
 
     $('.tab').hide(); // Escondemos todas
     $(tabAMostrar).show(); // Mostramos la clickleada
+
+    $('.side').hide(); // Escondemos todas
+    $(sideAMostrar).show(); // Mostramos la side bar respectiva
 
     // Actualizamos menu
     $('#tabs li').removeClass( "is-active" );
@@ -50,8 +58,8 @@
         startDate: start,
         endDate: end,
         ranges: {
-           'Today': [moment(), moment()],
-           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+           'Today': [moment().subtract(1, 'days'), moment()],
+           'Yesterday': [moment().subtract(2, 'days'), moment().subtract(1, 'days')],
            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
            'This Month': [moment().startOf('month'), moment().endOf('month')],

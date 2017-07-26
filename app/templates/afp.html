@@ -11,10 +11,10 @@
 {% endblock titulo %}
 
 {% block menu %}
-    <li {% if active == "hoy" %}class='is-active'{% endif %}><a data-tab="#hoy">Hoy</a></li>
-    <li {% if active == 'ayer' %}class="is-active"{% endif %}><a data-tab="#ayer">Ayer</a></li>
-    <li {% if active == 'anual' %}class="is-active"{% endif %}><a data-tab="#anual">Anual</a></li>
-    <li {% if active == 'personalizado' %}class="is-active"{% endif %}><a data-tab="#personalizado">Personalizado</a></li>
+    <li {% if active == "hoy" %}class='is-active'{% endif %}><a data-tab="#hoy" data-side="#hoyside">Hoy</a></li>
+    <li {% if active == 'ayer' %}class="is-active"{% endif %}><a data-tab="#ayer" data-side="#ayerside">Ayer</a></li>
+    <li {% if active == 'anual' %}class="is-active"{% endif %}><a data-tab="#anual" data-side="#anual side">Anual</a></li>
+    <li {% if active == 'personalizado' %}class="is-active"{% endif %}><a data-tab="#personalizado" data-side="#personalizadoside">Personalizado</a></li>
 {% endblock menu %}
 
 {% block content %}
@@ -136,6 +136,25 @@
 
 		</tbody>
 	</table>
+
+
 	</div>
 
 {% endblock content %}
+	
+	{% block sidebar %}
+	<br>
+	<div class="side" id="personalizadoside">
+		<article class="message is-info">
+		  <div class="message-header">
+		    <p>Ojo</p>
+		    <button class="delete"></button>
+		  </div>
+		  <div class="message-body">
+		    Si seleccionas <strong>un fin de semana, otro día no hábil o un día para el que no exista información</strong>, te mostraremos el día anterior más cercano. Por ejemplo, si seleccionas de un Domingo a un Lunes, te verás la rentabilidad de Viernes a Lunes.
+		  </div>
+		</article>
+	</div>
+	
+	{% endblock %}
+
