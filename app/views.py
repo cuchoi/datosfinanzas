@@ -49,7 +49,6 @@ def request_personalizado():
             'cuotaE': rentabilidadPer['E']
                 })
 
-
     except Exception as e:
         render_template("500.html", error = str(e))
 
@@ -125,6 +124,14 @@ def afp(tab = "hoy"):
             'cuotaD': rentabilidadAnual['D'],
             'cuotaE': rentabilidadAnual['E']
                 })
+
+
+   
+
+
+
+
+
 
     return render_template('afp.html',
                             usuario = usuario,

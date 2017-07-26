@@ -1,7 +1,10 @@
 {% extends "contenido.html" %}
 {% block subscribe_script %}
  <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<!--  <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>--> <script src="{{ url_for('static', filename='js/afp.js') }}"></script>   
+<!--  <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>-->
+ <script src="{{ url_for('static', filename='js/afp.js') }}"></script> 
+ <script src="{{ url_for('static', filename='js/sorttable.js') }}"></script> 
+
 {% endblock %}
 
 
@@ -24,7 +27,7 @@
     <div><h3 class="is-pulled-left title is-4">Rentabilidad Diaria &#160;&#160;</h3></div>
     <div><span class="tag is-info">{{ayer.strftime('%d-%m-%y')}}</span> - <span class="tag is-info">{{hoy.strftime('%d-%m-%y')}}</span></div>
 	</div>
-	<table class="table tablarentabilidad">
+	<table class="table tablarentabilidad sortable">
 		<thead>
 		  <tr>
 			<th>AFP</th>
@@ -39,11 +42,11 @@
 		{% for afp in AFPDiaria %}
 		<tr>
 			<th>{{ afp.nombre }}</th>
-			<td>{{ afp.cuotaA }}</td>
-			<td>{{ afp.cuotaB }}</td>
-			<td>{{ afp.cuotaC }}</td>
-			<td>{{ afp.cuotaD }}</td>
-			<td>{{ afp.cuotaE }}</td>
+			<td class="columnaA">{{ afp.cuotaA }}</td>
+			<td class="columnaB">{{ afp.cuotaB }}</td>
+			<td class="columnaC">{{ afp.cuotaC }}</td>
+			<td class="columnaD">{{ afp.cuotaD }}</td>
+			<td class="columnaE">{{ afp.cuotaE }}</td>
 		</tr>
 		{% endfor %}
 		</tbody>
@@ -54,7 +57,7 @@
     <div><span class="tag is-info">{{mesTD.strftime('%d-%m-%y')}}</span> - <span class="tag is-info">{{hoy.strftime('%d-%m-%y')}}</span></div>
 	</div>
 
-	<table class="table tablarentabilidad">
+	<table class="table tablarentabilidad sortable">
 		<thead>
 		  <tr>
 			<th>AFP</th>
@@ -69,11 +72,11 @@
 		{% for afp in AFPMensual %}
 		<tr>
 			<th>{{ afp.nombre }}</th>
-			<td>{{ afp.cuotaA }}</td>
-			<td>{{ afp.cuotaB }}</td>
-			<td>{{ afp.cuotaC }}</td>
-			<td>{{ afp.cuotaD }}</td>
-			<td>{{ afp.cuotaE }}</td>
+			<td class="columnaA">{{ afp.cuotaA }}</td>
+			<td class="columnaB">{{ afp.cuotaB }}</td>
+			<td class="columnaC">{{ afp.cuotaC }}</td>
+			<td class="columnaD">{{ afp.cuotaD }}</td>
+			<td class="columnaE">{{ afp.cuotaE }}</td>
 		</tr>
 	    {% endfor %}
 		</tbody>
@@ -83,7 +86,7 @@
     <div><h3 class="is-pulled-left title is-4">Año a la fecha&#160;&#160;</h3></div>
     <div><span class="tag is-info">{{anioTD.strftime('%d-%m-%y')}}</span> - <span class="tag is-info">{{hoy.strftime('%d-%m-%y')}}</span></div>
 	</div>
-	<table class="table tablarentabilidad">
+	<table class="table tablarentabilidad sortable">
 		<thead>
 		  <tr>
 			<th>AFP</th>
@@ -98,11 +101,11 @@
 		<tr>
 		{% for afp in AFPAnual %}
 			<th>{{ afp.nombre }}</th>
-			<td>{{ afp.cuotaA }}</td>
-			<td>{{ afp.cuotaB }}</td>
-			<td>{{ afp.cuotaC }}</td>
-			<td>{{ afp.cuotaD }}</td>
-			<td>{{ afp.cuotaE }}</td>
+			<td class="columnaA">{{ afp.cuotaA }}</td>
+			<td class="columnaB">{{ afp.cuotaB }}</td>
+			<td class="columnaC">{{ afp.cuotaC }}</td>
+			<td class="columnaD">{{ afp.cuotaD }}</td>
+			<td class="columnaE">{{ afp.cuotaE }}</td>
 		</tr>
 		{% endfor %}
 		</tbody>

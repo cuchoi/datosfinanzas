@@ -68,18 +68,42 @@
    //      }  
 
 
-   // function colorTable() {
-   //      var tr = $('.tablarentabilidad tr');
-   //      for (var i = 0; i < tr.length; i++) {
-   //          var tdlist=tr.find('td');
+    function colorTable() {
+          $('.tablarentabilidad').each(function() {
+            var columnas = ["A","B","C","D","E"];
             
-   //          tdlist.each(function( index ) {
-   //           var valor = parseInt($( this ).text().replace("%",""));
-   //           $( this ).css("background-color", getColorForPercentage(valor) )
-   //          });
-   //      }
+            for(var j = 0; j < columnas.length ; j++){
+                var colObj = $(this).find("td.columna"+columnas[j]);
+                var colNum = colObj.text().split("%").map(Number);
+                colNum.splice(6, 1);
+                
+                var len = colNum.length;
+                for (var i = 1; i < len; i++) {
+                    var tmp = colNum[i]; //Copy of the current element. 
+                    var objtmp = colObj[i];
+                    /*Check through the sorted part and compare with the number in tmp. If large, shift the number*/
+                    for (var l = i - 1; l >= 0 && (colNum[l] > tmp); l--) {
+                        //Shift the number
+                        colNum[l + 1] = colNum[l];
+                        colObj[l + 1] = colObj[l];
+                    }
+                    //Insert the copied number at the correct position
+                    //in sorted part. 
+                    colNum[l + 1] = tmp;
+                    colObj[l + 1] = objtmp;
+                }
 
-   //  }
+                colObj.eq(0).css({'background-color':'rgba(215,48,39,0.2)'});
+                colObj.eq(1).css({'background-color':'rgba(252,141,89,0.2)'});
+                colObj.eq(2).css({'background-color':'rgba(254,224,139,0.2)'});
+                colObj.eq(3).css({'background-color':'rgba(217,239,139,0.2)'});
+                colObj.eq(4).css({'background-color':'rgba(145,207,96,0.2)'});
+                colObj.eq(5).css({'background-color':'rgba(26,152,80,0.2)'});
+              }
+
+      });
+
+    }
 
 
 
@@ -95,8 +119,6 @@
 
       function cb(start, end) {
         $('#reportrange span').html(start.format('D/MM/YY') + ' - ' + end.format('D/MM/YY'));
-
-
     }
 
 
