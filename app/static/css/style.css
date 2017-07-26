@@ -17,6 +17,10 @@
 .tablarentabilidad th {
   text-align: center;
 }
+.tablarentabilidad td {
+  text-align: center;
+}
+
 
 @media (max-width: 500px) {
   .tablarentabilidad td {
