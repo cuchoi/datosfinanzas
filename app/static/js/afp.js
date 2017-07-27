@@ -97,20 +97,31 @@
 
     $('#reportrange').daterangepicker({
         locale: {
-          format: 'DD-MM-YY'
+          format: 'DD-MM-YY',
+          firstDay: 1
       },
       "autoApply": true,
       startDate: start,
       endDate: end,
-      ranges: {
-         'Today': [moment().subtract(1, 'days'), moment()],
-         'Yesterday': [moment().subtract(2, 'days'), moment().subtract(1, 'days')],
-         'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-         'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-         'This Month': [moment().startOf('month'), moment().endOf('month')],
-         'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-     }
- }, cb);
+      isInvalidDate: function(date) {
+        console.log(date);
+
+        if (date.isoWeekday() !== 6 && date.isoWeekday() !== 7) {
+            return false;
+        }
+        else{
+            return true;
+        }
+
+      }
+     //,
+     //  ranges: {
+     //     'Ayer': [moment().subtract(2, 'days'), moment().subtract(1, 'days')],
+     //     'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
+     //     'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
+     //     'Mes pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+     // }
+    }, cb);
 
     $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
         var jqxhr = $.post( "/afp/personalizado/req", { inicio: picker.startDate.format('YYYY-MM-DD'), final: picker.endDate.format('YYYY-MM-DD') },  function(data) {
@@ -141,6 +152,8 @@
             console.log(picker.endDate.format('YYYY-MM-DD'));
         });
     });
+
+ 
 
     cb(start, end);
         

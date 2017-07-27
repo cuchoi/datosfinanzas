@@ -1,5 +1,7 @@
 {% extends "contenido.html" %}
 {% block subscribe_script %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
  <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <!--  <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>-->
  <script src="{{ url_for('static', filename='js/afp.js') }}"></script> 
@@ -117,7 +119,9 @@
 	</div>
 	<br>
     
-     <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+    <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+
     &nbsp;
     <span></span> 
     </div>
@@ -152,7 +156,7 @@
 		    <button class="delete"></button>
 		  </div>
 		  <div class="message-body">
-		    Si seleccionas <strong>un fin de semana, otro día no hábil o un día para el que no exista información</strong>, te mostraremos el día anterior más cercano. Por ejemplo, si seleccionas de un Domingo a un Lunes verás la rentabilidad del Viernes a Lunes.
+		    Si seleccionas un <strong>día no hábil o un día para el que no exista información</strong>, te mostraremos el día anterior más cercano. Por ejemplo, si seleccionas de un Martes feriado verás la rentabilidad desde el Lunes.
 		  </div>
 		</article>
 	</div>
