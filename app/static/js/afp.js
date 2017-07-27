@@ -44,7 +44,7 @@
     function colorTable() {
           $('.tablarentabilidad').each(function() {
             var columnas = ["A","B","C","D","E"];
-            
+            console.log("holi");
             for(var j = 0; j < columnas.length ; j++){
                 var colObj = $(this).find("td.columna"+columnas[j]);
                 var colNum = colObj.text().split("%").map(Number);
@@ -90,7 +90,7 @@
       var start = moment().subtract(29, 'days');
       var end = moment();
 
-      function cb(start, end) {
+    function cb(start, end) {
         $('#reportrange span').html(start.format('D/MM/YY') + ' - ' + end.format('D/MM/YY'));
     }
 
@@ -132,17 +132,19 @@
                console.log(afp);
                $('#tablapersonalizado tbody').append(`<tr>
                 <th>`+afp["nombre"]+`</th>
-                <td>`+afp["cuotaA"]+`</td>
-                <td>`+afp["cuotaB"]+`</td>
-                <td>`+afp["cuotaC"]+`</td>
-                <td>`+afp["cuotaD"]+`</td>
-                <td>`+afp["cuotaE"]+`</td>
+                <td class="columnaA">`+afp["cuotaA"]+`</td>
+                <td class="columnaB">`+afp["cuotaB"]+`</td>
+                <td class="columnaC">`+afp["cuotaC"]+`</td>
+                <td class="columnaD">`+afp["cuotaD"]+`</td>
+                <td class="columnaE">`+afp["cuotaE"]+`</td>
                 </tr>`);
            });
 
         })
         .done(function() {
             console.log( "second success" );
+            colorTable();
+
         })
         .fail(function() {
             console.log( "error" );
