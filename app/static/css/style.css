@@ -23,6 +23,12 @@
 
 @media (max-width: 500px) {
   .tablarentabilidad td {
+    padding-left: 3px;
+    padding-right: 3px;
+    font-size: 90%;
+  }
+
+  .tablarentabilidad th {
     padding-left: 0;
     padding-right: 0;
   }
@@ -31,6 +37,8 @@
     padding-left: 0;
     padding-right: 0;
   }
+
+
 }
 
 table.sortable thead th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after { 
