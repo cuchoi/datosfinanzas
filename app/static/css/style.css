@@ -21,9 +21,13 @@
   text-align: center;
 }
 
-
 @media (max-width: 500px) {
   .tablarentabilidad td {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .section {
     padding-left: 0;
     padding-right: 0;
   }

@@ -61,7 +61,6 @@
     </div>
   </nav>
 </div>
-
   {% block hero %}{% endblock %}
 
   {% with messages = get_flashed_messages() %}
@@ -76,7 +75,7 @@
   </div>
   {% endif %}
   {% endwith %}
-
+  <section class="section">
   <div class="container">
     <div class="columns">
       <div class="column is-8">
@@ -86,6 +85,8 @@
        {% block sidebar %}{% endblock %}
      </div>
    </div>
- </div>
+  </div>
+
+ </section>
 </body>
 </html>
