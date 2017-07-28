@@ -11,7 +11,7 @@
 }
 
 .tablarentabilidad{
-	margin-top: 10px;
+	margin-top: 20px;
 }
 
 .tablarentabilidad th {
@@ -42,7 +42,7 @@
 }
 
 table.sortable thead th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after { 
-    content: " \25B4\25BE" 
+    content: "\25B4\25BE" 
 }
 
 

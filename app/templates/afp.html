@@ -11,7 +11,7 @@
 
 
 {% block titulo %}
-   Rentabilidad AFP
+  Rentabilidad AFP
 {% endblock titulo %}
 
 {% block menu %}
@@ -26,7 +26,7 @@
   <div class="tab" id="hoy">
     <div class="titlewrapper">
     <div><h3 class="is-pulled-left title is-4">Rentabilidad Diaria &#160;&#160;</h3></div>
-    <div><span class="tag is-info">{{ayer.strftime('%d-%m-%y')}}</span> - <span class="tag is-info">{{hoy.strftime('%d-%m-%y')}}</span></div>
+    <div class="is-pulled-right"><span class="tag is-info">{{ayer.strftime('%d-%m-%y')}}</span> - <span class="tag is-info">{{hoy.strftime('%d-%m-%y')}}</span></div>
 	</div>
 	<table class="table tablarentabilidad sortable">
 		<thead>
@@ -42,7 +42,7 @@
 		<tbody>
 		{% for afp in AFPDiaria %}
 		<tr>
-			<th>{{ afp.nombre }}</th>
+			<td><strong>{{ afp.nombre }}</strong></td>
 			<td class="columnaA">{{ afp.cuotaA }}</td>
 			<td class="columnaB">{{ afp.cuotaB }}</td>
 			<td class="columnaC">{{ afp.cuotaC }}</td>
@@ -55,9 +55,8 @@
 	<br>
     <div class="titlewrapper">
     <div><h3 class="is-pulled-left title is-4">Mes a la fecha&#160;&#160;</h3></div>
-    <div><span class="tag is-info">{{mesTD.strftime('%d-%m-%y')}}</span> - <span class="tag is-info">{{hoy.strftime('%d-%m-%y')}}</span></div>
+    <div class="is-pulled-right"><span class="tag is-info">{{mesTD.strftime('%d-%m-%y')}}</span> - <span class="tag is-info">{{hoy.strftime('%d-%m-%y')}}</span></div>
 	</div>
-
 	<table class="table tablarentabilidad sortable">
 		<thead>
 		  <tr>
@@ -72,7 +71,7 @@
 		<tbody>
 		{% for afp in AFPMensual %}
 		<tr>
-			<th>{{ afp.nombre }}</th>
+			<td><strong>{{ afp.nombre }}</strong></td>
 			<td class="columnaA">{{ afp.cuotaA }}</td>
 			<td class="columnaB">{{ afp.cuotaB }}</td>
 			<td class="columnaC">{{ afp.cuotaC }}</td>
@@ -85,7 +84,7 @@
 	<br>
 	<div class="titlewrapper">
     <div><h3 class="is-pulled-left title is-4">Año a la fecha&#160;&#160;</h3></div>
-    <div><span class="tag is-info">{{anioTD.strftime('%d-%m-%y')}}</span> - <span class="tag is-info">{{hoy.strftime('%d-%m-%y')}}</span></div>
+    <div class="is-pulled-right"><span class="tag is-info">{{anioTD.strftime('%d-%m-%y')}}</span> - <span class="tag is-info">{{hoy.strftime('%d-%m-%y')}}</span></div>
 	</div>
 	<table class="table tablarentabilidad sortable">
 		<thead>
@@ -101,7 +100,7 @@
 		<tbody>
 		<tr>
 		{% for afp in AFPAnual %}
-			<th>{{ afp.nombre }}</th>
+			<td><strong>{{ afp.nombre }}</strong></td>
 			<td class="columnaA">{{ afp.cuotaA }}</td>
 			<td class="columnaB">{{ afp.cuotaB }}</td>
 			<td class="columnaC">{{ afp.cuotaC }}</td>
@@ -126,7 +125,7 @@
     <span></span> 
     </div>
     <br>
-	<table id=tablapersonalizado class="table tablarentabilidad">
+	<table id="tablapersonalizado" class="table tablarentabilidad">
 		<thead>
 		  <tr>
 			<th>AFP</th>

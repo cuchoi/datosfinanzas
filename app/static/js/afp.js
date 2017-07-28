@@ -76,6 +76,7 @@
 
       });
 
+
     }
 
 
@@ -97,7 +98,7 @@
 
     $('#reportrange').daterangepicker({
         locale: {
-          format: 'DD-MM-YY',
+          format: 'DD/MM/YY',
           firstDay: 1
       },
       "autoApply": true,
@@ -131,7 +132,7 @@
             data.forEach(function(afp) {
                console.log(afp);
                $('#tablapersonalizado tbody').append(`<tr>
-                <th>`+afp["nombre"]+`</th>
+                <th><strong>`+afp["nombre"]+`</strong></th>
                 <td class="columnaA">`+afp["cuotaA"]+`</td>
                 <td class="columnaB">`+afp["cuotaB"]+`</td>
                 <td class="columnaC">`+afp["cuotaC"]+`</td>
