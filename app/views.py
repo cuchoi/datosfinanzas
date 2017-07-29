@@ -4,7 +4,7 @@ from .forms import LoginForm
 from .models import AFP, Cuota, Patrimonio
 from datetime import datetime, date, timedelta
 from sqlalchemy import and_
-import pygal
+# import pygal
 
 fondos = ["A", "B", "C", "D", "E"]
 AFPs = ["capital", "cuprum", "habitat", "modelo", "planvital"]
