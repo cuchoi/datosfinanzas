@@ -147,7 +147,7 @@ def afp(tab = "hoy"):
                             ayer = ayer,
                             request=request,
                             active=tab,
-                            graph_dia_data = graph_dia)
+                            graph_dia_data = graph_dia.render_data_uri())
 
 @app.route('/ffmm')
 def ffmm():
@@ -292,7 +292,6 @@ def load_csv():
     return render_template('index.html')
 
 def crearGraficoBarra(titulo, datosEjeX, datosBarra):
-    return ""
     try:
         custom_style = pygal.style.Style(label_font_size=20, title_font_size=30, legend_font_size =20 , tooltip_font_size=20     )
         graph = pygal.Bar(legend_at_bottom=True, legend_box_size=30, style=custom_style)
