@@ -1,7 +1,6 @@
 {% extends "contenido.html" %}
 {% block subscribe_script %}
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
  <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <!--  <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>-->
  <script src="{{ url_for('static', filename='js/afp.js') }}"></script> 
@@ -19,6 +18,8 @@
 <!--     <li {% if active == 'ayer' %}class="is-active"{% endif %}><a data-tab="#ayer" data-side="#ayerside">Ayer</a></li>
     <li {% if active == 'anual' %}class="is-active"{% endif %}><a data-tab="#anual" data-side="#anual side">Anual</a></li>
  -->    <li {% if active == 'personalizado' %}class="is-active"{% endif %}><a data-tab="#personalizado" data-side="#personalizadoside">Personalizado</a></li>
+       <li {% if active == 'activos' %}class="is-active"{% endif %}><a data-tab="#activos" data-side="#activosside">Activos</a></li>
+
 {% endblock menu %}
 
 {% block content %}
@@ -26,7 +27,8 @@
   <div class="tab" id="hoy">
     <div class="titlewrapper">
     <div><h3 class="is-pulled-left title is-4">Rentabilidad Diaria &#160;&#160;</h3></div>
-    <div class="is-pulled-right"><span class="tag is-info">{{ayer.strftime('%d-%m-%y')}}</span> - <span class="tag is-info">{{hoy.strftime('%d-%m-%y')}}</span></div>
+    <div class="is-pulled-right"><span class="tag is-info is-medium">{{ayer.strftime('%d-%m-%y')}}</span> - <span class="tag is-info is-medium">{{hoy.strftime('%d-%m-%y')}}</span></div>
+
 	</div>
 	<table class="table tablarentabilidad sortable">
 		<thead>
@@ -55,7 +57,7 @@
 	<br>
     <div class="titlewrapper">
     <div><h3 class="is-pulled-left title is-4">Mes a la fecha&#160;&#160;</h3></div>
-    <div class="is-pulled-right"><span class="tag is-info">{{mesTD.strftime('%d-%m-%y')}}</span> - <span class="tag is-info">{{hoy.strftime('%d-%m-%y')}}</span></div>
+    <div class="is-pulled-right"><span class="tag is-info is-medium">{{mesTD.strftime('%d-%m-%y')}}</span> - <span class="tag is-info is-medium">{{hoy.strftime('%d-%m-%y')}}</span></div>
 	</div>
 	<table class="table tablarentabilidad sortable">
 		<thead>
@@ -84,7 +86,7 @@
 	<br>
 	<div class="titlewrapper">
     <div><h3 class="is-pulled-left title is-4">Año a la fecha&#160;&#160;</h3></div>
-    <div class="is-pulled-right"><span class="tag is-info">{{anioTD.strftime('%d-%m-%y')}}</span> - <span class="tag is-info">{{hoy.strftime('%d-%m-%y')}}</span></div>
+    <div class="is-pulled-right"><span class="tag is-info is-medium">{{anioTD.strftime('%d-%m-%y')}}</span> - <span class="tag is-info is-medium">{{hoy.strftime('%d-%m-%y')}}</span></div>
 	</div>
 	<table class="table tablarentabilidad sortable">
 		<thead>
@@ -144,10 +146,11 @@
 
 	</div>
 
+
+
 {% endblock content %}
 	
-	{% block sidebar %}
-	<br>
+{% block sidebar %}
 	<div class="side rentabilidad" id="personalizadoside">
 		<article class="message is-info">
 		  <div class="message-header">
@@ -160,5 +163,5 @@
 		</article>
 	</div>
 	
-	{% endblock %}
+{% endblock %}
 

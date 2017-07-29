@@ -14,7 +14,7 @@ _mailinglist
 .cache/
 .idea/
 flask/
-
+run.py
 
 # Coverage reports
 htmlcov

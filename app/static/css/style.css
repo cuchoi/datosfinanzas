@@ -28,21 +28,24 @@
     font-size: 90%;
   }
 
+  .is-info.tag.is-medium {
+    font-size: small;
+  }
+
   .tablarentabilidad th {
     padding-left: 0;
     padding-right: 0;
   }
 
   .section {
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: 5px;
+    padding-right: 5px;
   }
-
 
 }
 
 table.sortable thead th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after { 
-    content: "\25B4\25BE" 
+    content: " \25B4\25BE" 
 }
 
 

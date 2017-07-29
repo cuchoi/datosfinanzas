@@ -3,50 +3,54 @@ from app import app, db
 from .forms import LoginForm
 from .models import AFP, Cuota, Patrimonio
 from datetime import datetime, date, timedelta
-from sqlalchemy import and_,or_
+from sqlalchemy import and_
+import pygal
 
-fondos = ["A","B","C","D","E"]
-AFPs = ["capital","cuprum","habitat","modelo","planvital"]
+fondos = ["A", "B", "C", "D", "E"]
+AFPs = ["capital", "cuprum", "habitat", "modelo", "planvital"]
+
 
 @app.route('/')
 @app.route('/index', methods=['GET'])
 def index():
-    usuario = {'nombre':'Fernando'}
+    usuario = {'nombre': 'Fernando'}
 
-    return render_template('index.html',
-                        usuario=usuario)
+    return render_template('index.html', usuario=usuario)
 
 
 @app.route('/afp/personalizado/req', methods=['POST'])
 def request_personalizado():
     try:
-        inicio = datetime.strptime(request.form['inicio'], '%Y-%m-%d')
-        final = datetime.strptime(request.form['final'], '%Y-%m-%d')
+        inicio_usuario = datetime.strptime(request.form['inicio'], '%Y-%m-%d')
+        final_usuario = datetime.strptime(request.form['final'], '%Y-%m-%d')
 
-        inicio = getUltimaFechaCuota("",inicio)
-        final = getUltimaFechaCuota("",final)
+        inicio = getUltimaFechaCuota("", inicio_usuario)
+        final = getUltimaFechaCuota("", final_usuario)
 
         rentabilidadPer = {}
         AFPPersonalizado = []
 
         for afp in AFP.query.all():
-            ultimaFechaAFP = getUltimaFechaCuota(afp.nombre)
             for f in fondos:
-                cuotaFinal = afp.cuotas.filter(and_(Cuota.fecha == final, Cuota.fondo == f)).first()
-                cuotaInicio = afp.cuotas.filter(and_(Cuota.fecha == inicio, Cuota.fondo == f)).first()
+                cuotaFinal = afp.cuotas.filter(and_(Cuota.fecha == final,
+                                               Cuota.fondo == f)).first()
+                cuotaInicio = afp.cuotas.filter(and_(Cuota.fecha == inicio,
+                                                     Cuota.fondo == f)).first()
 
-                if cuotaFinal == None or cuotaInicio == None:
-                    rentabilidadPer[f]="S/I"
+                if cuotaFinal is None or cuotaInicio is None:
+                    rentabilidadPer[f] = "S/I"
                 else:
                     rentabilidadPer[f] = "%.2f" % round(((cuotaFinal.valor/cuotaInicio.valor)-1)*100,2) +"%"
 
-            AFPPersonalizado.append({ 
+            AFPPersonalizado.append({
             'nombre': afp.nombre.title(),
             'cuotaA': rentabilidadPer['A'],
             'cuotaB': rentabilidadPer['B'],
             'cuotaC': rentabilidadPer['C'],
             'cuotaD': rentabilidadPer['D'],
-            'cuotaE': rentabilidadPer['E']
+            'cuotaE': rentabilidadPer['E'],
+            'inicio': inicio,
+            'final': final
                 })
 
     except Exception as e:
@@ -57,14 +61,13 @@ def request_personalizado():
 @app.route('/afp')
 @app.route('/afp/<tab>')
 def afp(tab = "hoy"):
- 
     usuario = {'nombre':'Fernando'}
 
     # Hoy en realidad es el último día para el cual tenemos datos
     hoy = getUltimaFechaCuota()
     ayer = getUltimaFechaCuota("", hoy-timedelta(1))
-    mesTD = getUltimaFechaCuota("",hoy.replace(day=1)) 
-    anioTD = getUltimaFechaCuota("",hoy.replace(day=1).replace(month=1)) 
+    mesTD = getUltimaFechaCuota("",hoy.replace(day=1))
+    anioTD = getUltimaFechaCuota("",hoy.replace(day=1).replace(month=1))
 
     AFPDiaria = []
     AFPMesTD = []
@@ -75,14 +78,10 @@ def afp(tab = "hoy"):
     rentabilidadAnual = {}
 
     for afp in AFP.query.all():
-        ultimaFechaAFP = getUltimaFechaCuota(afp.nombre)
-        
         for f in fondos:
             cuotaHoy = afp.cuotas.filter(and_(Cuota.fecha == hoy, Cuota.fondo == f)).first()
             cuotaAyer = afp.cuotas.filter(and_(Cuota.fecha == ayer, Cuota.fondo == f)).first()
-
             cuotaMesTD = afp.cuotas.filter(and_(Cuota.fecha == mesTD, Cuota.fondo == f)).first()
-
             cuotaAnioTD = afp.cuotas.filter(and_(Cuota.fecha == anioTD, Cuota.fondo == f)).first()
 
             if cuotaHoy == None or cuotaAyer == None:
@@ -100,7 +99,7 @@ def afp(tab = "hoy"):
             else:
                 rentabilidadAnual[f] = "%.2f" % round(((cuotaHoy.valor/cuotaAnioTD.valor)-1)*100,2) +"%"
 
-        AFPDiaria.append({ 
+        AFPDiaria.append({
             'nombre': afp.nombre.title(),
             'cuotaA': rentabilidadDiaria['A'],
             'cuotaB': rentabilidadDiaria['B'],
@@ -108,7 +107,7 @@ def afp(tab = "hoy"):
             'cuotaD': rentabilidadDiaria['D'],
             'cuotaE': rentabilidadDiaria['E']
                 })
-        AFPMesTD.append({ 
+        AFPMesTD.append({
             'nombre': afp.nombre.title(),
             'cuotaA': rentabilidadMensual['A'],
             'cuotaB': rentabilidadMensual['B'],
@@ -116,7 +115,7 @@ def afp(tab = "hoy"):
             'cuotaD': rentabilidadMensual['D'],
             'cuotaE': rentabilidadMensual['E']
                 })
-        AFPAnioTD.append({ 
+        AFPAnioTD.append({
             'nombre': afp.nombre.title(),
             'cuotaA': rentabilidadAnual['A'],
             'cuotaB': rentabilidadAnual['B'],
@@ -125,17 +124,9 @@ def afp(tab = "hoy"):
             'cuotaE': rentabilidadAnual['E']
                 })
 
-
-   
-
-
-
-
-
-
     return render_template('afp.html',
                             usuario = usuario,
-                            AFPDiaria = AFPDiaria, 
+                            AFPDiaria = AFPDiaria,
                             AFPMensual = AFPMesTD,
                             mesTD =mesTD,
                             AFPAnual = AFPAnioTD,
@@ -143,14 +134,14 @@ def afp(tab = "hoy"):
                             hoy = hoy,
                             ayer = ayer,
                             request=request,
-                            active=tab)   
+                            active=tab)
 
 @app.route('/ffmm')
 def ffmm():
     usuario = {'nombre':'Fernando'}
 
     BancoChile = [  # fake array of AFPs
-        { 
+        {
             'nombre': 'Modelo',
             'cuotaA': '30',
             'cuotaB': '20',
@@ -158,7 +149,7 @@ def ffmm():
             'cuotaD': '10',
             'cuotaE': '30'
         },
-        { 
+        {
             'nombre': 'Capital',
             'cuotaA': '100',
             'cuotaB': '70',
@@ -169,20 +160,7 @@ def ffmm():
 
     return render_template('ffmm.html',
                             usuario = usuario,
-                            BancoChile = BancoChile, request=request)    
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        flash('Login requested for OpenID="%s", remember_me=%s' %
-              (form.openid.data, str(form.remember_me.data)))
-        return redirect('/index')
-    return render_template('login.html', 
-                           title='Sign In',
-                           form=form,
-                           providers=app.config['OPENID_PROVIDERS'])
+                            BancoChile = BancoChile, request=request)
 
 # date: Date of refence. Empty: Last in the database
 def getUltimaFechaCuota(afp = "", date= ""):
@@ -219,7 +197,6 @@ def scrape_cuotas_svs():
 
     return ffmm()
 
-
 def load_csv():
     import csv
 
@@ -250,7 +227,7 @@ def load_csv():
         planvital = AFP.query.filter_by(nombre="planvital").first()
         provida = AFP.query.filter_by(nombre="provida").first()
 
-    for f in fondos:       
+    for f in fondos:
         with open('csv/vcf'+f+'2012-2017.csv', newline='') as csvfile:
             reader = csv.reader(csvfile, delimiter=';')
             for row in reader:
@@ -275,7 +252,7 @@ def load_csv():
                         cuotaModelo = Cuota(fecha=fecha,AFP_id=modelo.id,valor=row[7],fondo=f)
                         cuotaPlanvital = Cuota(fecha=fecha,AFP_id=planvital.id,valor=row[9],fondo=f)
                         cuotaProvida = Cuota(fecha=fecha,AFP_id=provida.id,valor=row[11],fondo=f)
-                        
+
                         db.session.add(cuotaCapital)
                         db.session.add(cuotaCuprum)
                         db.session.add(cuotaHabitat)
@@ -289,7 +266,7 @@ def load_csv():
                         patrimonioModelo = Patrimonio(fecha=fecha,AFP_id=modelo.id,valor=int(row[8]), fondo=f)
                         patrimonioPlanvital = Patrimonio(fecha=fecha,AFP_id=planvital.id,valor=int(row[10]), fondo=f)
                         patrimonioProvida = Patrimonio(fecha=fecha,AFP_id=provida.id,valor=int(row[12]), fondo=f)
-                        
+
                         db.session.add(patrimonioCapital)
                         db.session.add(patrimonioCuprum)
                         db.session.add(patrimonioHabitat)
@@ -300,6 +277,14 @@ def load_csv():
                         db.session.commit()
 
     return render_template('index.html')
+
+def crearGraficoLinea(titulo, nombresEjeX):
+    try:
+        graph = pygal.Line()
+        graph.title = titulo
+        graph.x_labels = nombresEjeX
+    except Exception as e:
+        render_template("500.html", error = str(e))
 
 
 @app.errorhandler(404)

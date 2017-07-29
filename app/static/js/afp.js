@@ -5,13 +5,11 @@
        var tabAMostrar = tabSeleccionado.children().attr('data-tab');
        var sideAMostrar = tabSeleccionado.children().attr('data-side');
 
-
        $('.tab').hide();
        $(tabAMostrar).show();
 
        $('.side').hide();
        $(sideAMostrar).show();
-
 
        $('#tabs li').removeClass("is-active");
        tabSeleccionado.addClass( "is-active" );
@@ -126,7 +124,6 @@
 
     $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
         var jqxhr = $.post( "/afp/personalizado/req", { inicio: picker.startDate.format('YYYY-MM-DD'), final: picker.endDate.format('YYYY-MM-DD') },  function(data) {
-            console.log( "success" );
             $('#tablapersonalizado tbody tr').remove();
 
             data.forEach(function(afp) {
@@ -141,27 +138,24 @@
                 </tr>`);
            });
 
+                       console.log(data[0]["inicio"]);
+
+           // data[0]["final"]
+
         })
         .done(function() {
-            console.log( "second success" );
             colorTable();
-
         })
         .fail(function() {
             console.log( "error" );
         })
         .always(function() {
-            console.log(picker.startDate.format('YYYY-MM-DD'));
-            console.log(picker.endDate.format('YYYY-MM-DD'));
         });
     });
 
  
-
-    cb(start, end);
-        
+    cb(start, end);       
     colorTable();
-
 });
 
  /**
