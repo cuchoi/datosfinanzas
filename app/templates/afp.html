@@ -1,13 +1,4 @@
 {% extends "contenido.html" %}
-{% block subscribe_script %}
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
- <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<!--  <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>-->
- <script src="{{ url_for('static', filename='js/afp.js') }}"></script> 
- <script src="{{ url_for('static', filename='js/sorttable.js') }}"></script> 
-
-{% endblock %}
-
 
 {% block titulo %}
   Rentabilidad AFP
@@ -170,5 +161,14 @@
 		</article>
 	</div>
 	
+{% endblock %}
+
+{% block subscribe_script %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+ <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<!--  <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>-->
+ <script src="{{ url_for('static', filename='js/afp.js') }}"></script> 
+ <script src="{{ url_for('static', filename='js/sorttable.js') }}"></script> 
+
 {% endblock %}
 

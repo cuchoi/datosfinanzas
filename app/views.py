@@ -17,6 +17,9 @@ def index():
 
     return render_template('index.html', usuario=usuario)
 
+@app.route('/contacto')
+def contacto():
+    return render_template('contacto.html')
 
 @app.route('/afp/personalizado/req', methods=['POST'])
 def request_personalizado():

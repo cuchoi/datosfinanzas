@@ -12,14 +12,6 @@
   {% endif %}
   <link href="/static/css/bulma.css" rel="stylesheet" media="screen">
   <link href="/static/css/style.css" rel="stylesheet" media="screen">
-  <script
-  src="https://code.jquery.com/jquery-3.2.1.min.js"
-  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-  crossorigin="anonymous"></script>
-  <script src="{{ url_for('static', filename='js/bulma.js') }}"></script>   
-  {% block subscribe_script %}
-  {% endblock %}
-
 </head>
 <body>
 <div class="container">
@@ -75,15 +67,23 @@
   <section class="section">
   <div class="container">
     <div class="columns">
-      <div class="column is-7">
+      <div class="column is-6">
         {% block content %}{% endblock %}
       </div>
-      <div class="column">
+      <div class="column is-offset-1">
        {% block sidebar %}{% endblock %}
      </div>
    </div>
   </div>
 
  </section>
+
+ <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+  <script src="{{ url_for('static', filename='js/bulma.js') }}"></script>   
+  {% block subscribe_script %}
+  {% endblock %}
 </body>
 </html>
