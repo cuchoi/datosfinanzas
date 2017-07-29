@@ -4,7 +4,7 @@ from .forms import LoginForm
 from .models import AFP, Cuota, Patrimonio
 from datetime import datetime, date, timedelta
 from sqlalchemy import and_
-# import pygal
+import pygal
 
 fondos = ["A", "B", "C", "D", "E"]
 AFPs = ["capital", "cuprum", "habitat", "modelo", "planvital"]
@@ -74,10 +74,13 @@ def afp(tab = "hoy"):
     AFPAnioTD = []
 
     rentabilidadDiaria = {}
+    rentabilidadDiariaGraph = {}
     rentabilidadMensual = {}
     rentabilidadAnual = {}
 
-    for afp in AFP.query.all():
+    afps = AFP.query.all()
+    datosGraficoDiario = []
+    for afp in afps:
         for f in fondos:
             cuotaHoy = afp.cuotas.filter(and_(Cuota.fecha == hoy, Cuota.fondo == f)).first()
             cuotaAyer = afp.cuotas.filter(and_(Cuota.fecha == ayer, Cuota.fondo == f)).first()
@@ -86,8 +89,10 @@ def afp(tab = "hoy"):
 
             if cuotaHoy == None or cuotaAyer == None:
                 rentabilidadDiaria[f]="S/I"
+                rentabilidadDiariaGraph[f] = 0
             else:
                 rentabilidadDiaria[f] = "%.2f" % round(((cuotaHoy.valor/cuotaAyer.valor)-1)*100,2) +"%"
+                rentabilidadDiariaGraph[f] = round(((cuotaHoy.valor/cuotaAyer.valor)-1)*100,3)
 
             if cuotaHoy == None or cuotaMesTD == None:
                 rentabilidadMensual[f]="S/I"
@@ -98,6 +103,8 @@ def afp(tab = "hoy"):
                 rentabilidadAnual[f]="S/I"
             else:
                 rentabilidadAnual[f] = "%.2f" % round(((cuotaHoy.valor/cuotaAnioTD.valor)-1)*100,2) +"%"
+
+        datosGraficoDiario.append([afp.nombre,[rentabilidadDiariaGraph['A'],rentabilidadDiariaGraph['B'],rentabilidadDiariaGraph['C'],rentabilidadDiariaGraph['D'],rentabilidadDiariaGraph['E']]])
 
         AFPDiaria.append({
             'nombre': afp.nombre.title(),
@@ -124,6 +131,8 @@ def afp(tab = "hoy"):
             'cuotaE': rentabilidadAnual['E']
                 })
 
+    graph_dia = crearGraficoBarra("Rentabilidad Diaria (%)", ["A","B","C","D","E"], datosGraficoDiario)
+
     return render_template('afp.html',
                             usuario = usuario,
                             AFPDiaria = AFPDiaria,
@@ -134,7 +143,8 @@ def afp(tab = "hoy"):
                             hoy = hoy,
                             ayer = ayer,
                             request=request,
-                            active=tab)
+                            active=tab,
+                            graph_dia_data = graph_dia.render_data_uri())
 
 @app.route('/ffmm')
 def ffmm():
@@ -278,13 +288,21 @@ def load_csv():
 
     return render_template('index.html')
 
-def crearGraficoLinea(titulo, nombresEjeX):
+def crearGraficoBarra(titulo, datosEjeX, datosBarra):
     try:
-        graph = pygal.Line()
+        custom_style = pygal.style.Style(label_font_size=20, title_font_size=30, legend_font_size =20 , tooltip_font_size=20     )
+        graph = pygal.Bar(legend_at_bottom=True, legend_box_size=30, style=custom_style)
         graph.title = titulo
-        graph.x_labels = nombresEjeX
+        graph.x_labels = datosEjeX
+
+        for columna in datosBarra:
+            graph.add(columna[0].title(), columna[1])
+
+        return graph
+
     except Exception as e:
-        render_template("500.html", error = str(e))
+        raise(e)
+
 
 
 @app.errorhandler(404)
