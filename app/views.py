@@ -3,12 +3,11 @@ from app import app, db
 from .forms import LoginForm
 from .models import AFP, Cuota, Patrimonio
 from datetime import datetime, date, timedelta
-from sqlalchemy import and_
+from sqlalchemy import and_, exc
 import pygal
 
-fondos = ["A", "B", "C", "D", "E"]
+fondos = [ "A","B", "C", "D", "E"]
 AFPs = ["capital", "cuprum", "habitat", "modelo", "planvital"]
-
 
 @app.route('/')
 @app.route('/index', methods=['GET'])
@@ -195,18 +194,106 @@ def getUltimaFechaCuota(afp = "", date= ""):
 def scrape_cuotas_svs():
     import mechanicalsoup
 
-    browser = mechanicalsoup.StatefulBrowser(
-    soup_config={'features': 'lxml'}    )
+    try:
+        browser = mechanicalsoup.StatefulBrowser(
+        soup_config={'features': 'lxml'}    )
 
-    browser.set_verbose(2)
-    url = "http://www.safp.cl/safpstats/stats/apps/vcuofon/vcfAFP.php?tf=A"
-    browser.open(url)
-    browser.select_form("vcf")
-    browser["ddVCF"]=19
+        browser.set_verbose(2)
 
-    resp = browser.submit_selected()
+        for f in fondos:
+            for i in range(1,28):
+                if len(str(i)) == 1:
+                    dia ="0"+str(i)
+                if len(str(i)) == 2:
+                    dia = str(i)
 
-    page = browser.get_current_page()
+                url = "http://www.safp.cl/safpstats/stats/apps/vcuofon/vcfAFP.php?tf="+f
+                browser.open(url)
+                browser.select_form("#main form")
+
+                browser["ddVCF"] = dia
+                resp = browser.submit_selected()
+
+                page = browser.get_current_page()
+
+
+                table = page.find_all("table", class_="tw")
+                fecha = table[1].find("td", class_="EPIGRAFE")
+
+                if fecha is None:
+                    continue
+
+                fecha_str = fecha.get_text()
+                fecha_str = fecha_str.split(' ')[0].strip()
+
+                print(fecha_str)
+
+                # fecha_str = fecha_str.split('-')
+                # dia_scrape = fecha_str[0]
+                # mes_scrape = fecha_str[1]
+                # ano_scrape = fecha_str[2]
+
+                import locale
+                locale.setlocale(locale.LC_TIME, 'es_ES')
+
+                fecha = datetime.strptime(fecha_str, '%d-%B-%Y').date()
+
+                if fecha.weekday() >= 5:
+                    print(fecha)
+                    print("Skipped!")
+                    continue
+
+                cuotas = page.find_all("td", class_="CONTENIDOcuatro")
+
+
+                valorCuotaCapital = float(cuotas[0].get_text().replace(".","").replace(",","."))
+                valorCuotaCuprum = float(cuotas[2].get_text().replace(".","").replace(",","."))
+                valorCuotaHabitat = float(cuotas[4].get_text().replace(".","").replace(",","."))
+                valorCuotaModelo = float(cuotas[6].get_text().replace(".","").replace(",","."))
+                valorCuotaPlanvital = float(cuotas[8].get_text().replace(".","").replace(",","."))
+                valorCuotaProvida = float(cuotas[10].get_text().replace(".","").replace(",","."))
+
+                cuotaCapital = Cuota(fecha=fecha,AFP_id=1,valor=valorCuotaCapital,fondo=f)
+                cuotaCuprum = Cuota(fecha=fecha,AFP_id=2,valor=valorCuotaCuprum,fondo=f)
+                cuotaHabitat = Cuota(fecha=fecha,AFP_id=3,valor=valorCuotaHabitat,fondo=f)
+                cuotaModelo = Cuota(fecha=fecha,AFP_id=4,valor=valorCuotaModelo,fondo=f)
+                cuotaPlanvital = Cuota(fecha=fecha,AFP_id=5,valor=valorCuotaPlanvital,fondo=f)
+                cuotaProvida = Cuota(fecha=fecha,AFP_id=6,valor=valorCuotaProvida,fondo=f)
+
+                db.session.add(cuotaCapital)
+                db.session.add(cuotaCuprum)
+                db.session.add(cuotaHabitat)
+                db.session.add(cuotaModelo)
+                db.session.add(cuotaPlanvital)
+                db.session.add(cuotaProvida)
+
+                patrimonioCapital = Patrimonio(fecha=fecha,AFP_id=1,valor=int(cuotas[1].get_text().replace(".","")), fondo=f)
+                patrimonioCuprum = Patrimonio(fecha=fecha,AFP_id=2,valor=int(cuotas[3].get_text().replace(".","")), fondo=f)
+                patrimonioHabitat = Patrimonio(fecha=fecha,AFP_id=3,valor=int(cuotas[5].get_text().replace(".","")), fondo=f)
+                patrimonioModelo = Patrimonio(fecha=fecha,AFP_id=4,valor=int(cuotas[7].get_text().replace(".","")), fondo=f)
+                patrimonioPlanvital = Patrimonio(fecha=fecha,AFP_id=5,valor=int(cuotas[9].get_text().replace(".","")), fondo=f)
+                patrimonioProvida = Patrimonio(fecha=fecha,AFP_id=6,valor=int(cuotas[11].get_text().replace(".","")), fondo=f)
+
+                db.session.add(patrimonioCapital)
+                db.session.add(patrimonioCuprum)
+                db.session.add(patrimonioHabitat)
+                db.session.add(patrimonioModelo)
+                db.session.add(patrimonioPlanvital)
+                db.session.add(patrimonioProvida)
+
+
+                for cuota in cuotas:
+                    print(cuota.get_text())
+
+                try:
+                    db.session.commit()
+
+                except Exception as e:
+                    print("Duplicado")
+                    continue
+
+    except Exception as e:
+        raise(e)
 
     return ffmm()
 
@@ -305,8 +392,6 @@ def crearGraficoBarra(titulo, datosEjeX, datosBarra):
 
     except Exception as e:
         raise(e)
-
-
 
 @app.errorhandler(404)
 def not_found_error(error):
