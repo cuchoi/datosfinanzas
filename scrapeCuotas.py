@@ -11,7 +11,7 @@ fondos = ["A", "B", "C", "D", "E"]
 
 try:
     print("Iniciando. Hora: "+str(datetime.now()))
-    locale.setlocale(locale.LC_TIME, 'es_ES')
+    locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
     browser = mechanicalsoup.StatefulBrowser(soup_config={'features': 'lxml'})
     afps = AFP.query.all()
 
