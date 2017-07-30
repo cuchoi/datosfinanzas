@@ -27,7 +27,7 @@ class Cuota(db.Model):
     __table_args__ = (UniqueConstraint("fecha", "fondo","AFP_id"),)
 
     def __repr__(self):
-        return '<Fondo %r. Valor: %r . AFP: %r. Fecha: %r>' % (self.fondo, self.valor, self.AFP_id, self.fecha)
+        return '<Cuota %r. V: %r .AFP: %r. Fecha: %r>' % (self.fondo, self.valor, self.AFP_id, self.fecha)
 
 class Patrimonio(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -38,7 +38,7 @@ class Patrimonio(db.Model):
     __table_args__ = (UniqueConstraint("fecha","fondo","AFP_id"),)
 
     def __repr__(self):
-        return '<Patrimonio Valor: %r >' % (self.valor)
+        return '<Patrimonio. F: %r. V: %r .AFP: %r. Fecha: %r>' % (self.fondo, self.valor, self.AFP_id, self.fecha)
 
 
 

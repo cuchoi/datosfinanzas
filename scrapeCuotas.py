@@ -10,11 +10,13 @@ from datetime import datetime
 fondos = ["A", "B", "C", "D", "E"]
 
 try:
+    print("Iniciando. Hora: "+str(datetime.now()))
     locale.setlocale(locale.LC_TIME, 'es_ES')
     browser = mechanicalsoup.StatefulBrowser(soup_config={'features': 'lxml'})
     afps = AFP.query.all()
 
     for f in fondos:
+        print("Fondo: "+f)
         url = "http://www.safp.cl/safpstats/stats/apps/vcuofon/vcfAFP.php?tf="+f
         browser.open(url)
         page = browser.get_current_page()
@@ -38,32 +40,42 @@ try:
             continue
         
         for afp in afps:
-            print(afp.nombre)
-            closest = Cuota.query.filter(
+            closest_cuota = Cuota.query.filter(
                       and_(Cuota.AFP_id == afp.id, Cuota.fondo == f)).order_by(Cuota.fecha.desc()).first()
 
+            closest_patrimonio = Patrimonio.query.filter(
+                      and_(Patrimonio.AFP_id == afp.id, Patrimonio.fondo == f)).order_by(Patrimonio.fecha.desc()).first()
 
-            print(closest)
-            if closest.fecha < fechaDisponible:
-                print("Guardando")
+            if closest_cuota.fecha < fechaDisponible:
                 indice_cuota = (afp.id - 1) * 2
-                indice_patrimonio = (afp.id * 2) - 1
                 valorCuota = float(cuotas[indice_cuota].get_text().replace(".", "").replace(",", "."))
 
                 cuota_a_guardar = Cuota(fecha=fecha,AFP_id=afp.id,valor=valorCuota,fondo=f) 
                 db.session.add(cuota_a_guardar)
 
-                patrimonio_a_guardar = Patrimonio(fecha=fecha,AFP_id=afp.id,valor=int(cuotas[indice_patrimonio].get_text().replace(".","")), fondo=f)
+                try:
+                    db.session.commit()
+                    print("Guardado Cuota: "+str(cuota_a_guardar))
+
+                except Exception as e:
+                    print("Duplicado u otro error: "+str(e))
+                    continue
+
+            if closest_patrimonio.fecha < fechaDisponible:
+                indice_patrimonio = (afp.id * 2) - 1
+                valorPatrimonio = int(cuotas[indice_patrimonio].get_text().replace(".",""))
+                patrimonio_a_guardar = Patrimonio(fecha=fecha,AFP_id=afp.id,valor=valorPatrimonio, fondo=f)
                 db.session.add(patrimonio_a_guardar)
 
                 try:
                     db.session.commit()
+                    print("Guardado Patrimonio: "+str(patrimonio_a_guardar))
 
                 except Exception as e:
-                    print("Duplicado")
+                    print("Duplicado u otro error: "+str(e))
                     continue
-            else:
-                print("Esa fecha ya está: "+str(closest.fecha))
+            # else:
+            #     print("Esa fecha ya está: "+str(closest.fecha))
 
 except Exception as e:
-    raise(e)
+    print("ERROR:"+str(e))
