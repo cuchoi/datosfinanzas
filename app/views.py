@@ -40,7 +40,7 @@ def request_personalizado(decimales):
                                                      Cuota.fondo == f)).first()
 
                 if cuotaFinal is None or cuotaInicio is None:
-                    rentabilidadPer[f] = "S/I"
+                    rentabilidadPer[f] = None
                 else:
                     rentabilidadPer[f] = round(((cuotaFinal.valor/cuotaInicio.valor)-1)*100,decimales)
 
@@ -93,17 +93,17 @@ def afp(tab = "hoy"):
             cuotaAnioTD = afp.cuotas.filter(and_(Cuota.fecha == anioTD, Cuota.fondo == f)).first()
 
             if cuotaHoy == None or cuotaAyer == None:
-                rentabilidadDiaria[f]="S/I"
+                rentabilidadDiaria[f]= None
             else:
                 rentabilidadDiaria[f] = round(((cuotaHoy.valor/cuotaAyer.valor)-1)*100,3)
 
             if cuotaHoy == None or cuotaMesTD == None:
-                rentabilidadMensual[f]="S/I"
+                rentabilidadMensual[f]= None
             else:
                 rentabilidadMensual[f] = round(((cuotaHoy.valor/cuotaMesTD.valor)-1)*100,3)
 
             if cuotaHoy == None or cuotaAnioTD == None:
-                rentabilidadAnual[f]="S/I"
+                rentabilidadAnual[f]= None
             else:
                 rentabilidadAnual[f] = round(((cuotaHoy.valor/cuotaAnioTD.valor)-1)*100,3)
 
@@ -401,22 +401,26 @@ def crearGraficoBarraDesdeDict(titulo, dictionarioDatos):
         rentD = afp['cuotaD']
         rentE = afp['cuotaE']
 
-        if rentA == "S/I":
-            rentA == 0
 
-        if rentB == "S/I":
-            rentB == 0
+        print(rentA)
+        if rentA == None:
+            rentA = 0
 
-        if rentC == "S/I":
-            rentC == 0
+        if rentB == None:
+            rentB = 0
 
-        if rentD == "S/I":
-            rentD == 0
+        if rentC == None:
+            rentC = 0
 
-        if rentE == "S/I":
-            rentE == 0
+        if rentD == None:
+            rentD = 0
+
+        if rentE == None:
+            rentE = 0
 
         datosGraficoDiario.append([afp['nombre'],[rentA,rentB,rentC,rentD,rentE]])
+
+        print(datosGraficoDiario)
 
     return crearGraficoBarra(titulo, ["A","B","C","D","E"], datosGraficoDiario).render_data_uri()
 

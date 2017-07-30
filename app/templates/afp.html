@@ -5,7 +5,7 @@
 {% endblock titulo %}
 
 {% block menu %}
-    <li {% if active == "hoy" %}class='is-active'{% endif %}><a data-tab="#hoy" data-side="#hoyside">Hoy</a></li>
+    <li {% if active == "hoy" %}class='is-active'{% endif %}><a data-tab="#hoy" data-side="#hoyside">Última información</a></li>
 <!--     <li {% if active == 'ayer' %}class="is-active"{% endif %}><a data-tab="#ayer" data-side="#ayerside">Ayer</a></li>
     <li {% if active == 'anual' %}class="is-active"{% endif %}><a data-tab="#anual" data-side="#anual side">Anual</a></li>
  -->    <li {% if active == 'personalizado' %}class="is-active"{% endif %}><a data-tab="#personalizado" data-side="#personalizadoside">Personalizado</a></li>
@@ -36,11 +36,11 @@
 		{% for afp in AFPDiaria %}
 		<tr>
 			<td><strong>{{ afp.nombre }}</strong></td>
-			<td class="columnaA">{{ '%.3f' % afp.cuotaA }}%</td>
-			<td class="columnaB">{{ '%.3f' % afp.cuotaB }}%</td>
-			<td class="columnaC">{{ '%.3f' % afp.cuotaC }}%</td>
-			<td class="columnaD">{{ '%.3f' % afp.cuotaD }}%</td>
-			<td class="columnaE">{{ '%.3f' % afp.cuotaE }}%</td>
+			<td class="columnaA">{{ '%.3f%%' % afp.cuotaA if afp.cuotaA != None else 'S/I' }}</td>
+			<td class="columnaB">{{ '%.3f%%' % afp.cuotaB if afp.cuotaB != None else 'S/I' }}</td>
+			<td class="columnaC">{{ '%.3f%%' % afp.cuotaC if afp.cuotaC != None else 'S/I' }}</td>
+			<td class="columnaD">{{ '%.3f%%' % afp.cuotaD if afp.cuotaD != None else 'S/I' }}</td>
+			<td class="columnaE">{{ '%.3f%%' % afp.cuotaE if afp.cuotaE != None else 'S/I' }}</td>
 		</tr>
 		{% endfor %}
 		</tbody>
@@ -65,11 +65,11 @@
 		{% for afp in AFPMensual %}
 		<tr>
 			<td><strong>{{ afp.nombre }}</strong></td>
-			<td class="columnaA">{{ '%.2f' % afp.cuotaA }}%</td>
-			<td class="columnaB">{{ '%.2f' % afp.cuotaB }}%</td>
-			<td class="columnaC">{{ '%.2f' % afp.cuotaC }}%</td>
-			<td class="columnaD">{{ '%.2f' % afp.cuotaD }}%</td>
-			<td class="columnaE">{{ '%.2f' % afp.cuotaE }}%</td>
+			<td class="columnaA">{{ '%.2f%%' % afp.cuotaA if afp.cuotaA != None else 'S/I' }}</td>
+			<td class="columnaB">{{ '%.2f%%' % afp.cuotaB if afp.cuotaB != None else 'S/I' }}</td>
+			<td class="columnaC">{{ '%.2f%%' % afp.cuotaC if afp.cuotaC != None else 'S/I' }}</td>
+			<td class="columnaD">{{ '%.2f%%' % afp.cuotaD if afp.cuotaD != None else 'S/I' }}</td>
+			<td class="columnaE">{{ '%.2f%%' % afp.cuotaE if afp.cuotaE != None else 'S/I' }}</td>
 		</tr>
 	    {% endfor %}
 		</tbody>
@@ -94,11 +94,11 @@
 		<tr>
 		{% for afp in AFPAnual %}
 			<td><strong>{{ afp.nombre }}</strong></td>
-			<td class="columnaA">{{ '%.2f' % afp.cuotaA }}%</td>
-			<td class="columnaB">{{ '%.2f' % afp.cuotaB }}%</td>
-			<td class="columnaC">{{ '%.2f' % afp.cuotaC }}%</td>
-			<td class="columnaD">{{ '%.2f' % afp.cuotaD }}%</td>
-			<td class="columnaE">{{ '%.2f' % afp.cuotaE }}%</td>
+			<td class="columnaA">{{ '%.2f%%' % afp.cuotaA if afp.cuotaA != None else 'S/I' }}</td>
+			<td class="columnaB">{{ '%.2f%%' % afp.cuotaB if afp.cuotaB != None else 'S/I' }}</td>
+			<td class="columnaC">{{ '%.2f%%' % afp.cuotaC if afp.cuotaC != None else 'S/I' }}</td>
+			<td class="columnaD">{{ '%.2f%%' % afp.cuotaD if afp.cuotaD != None else 'S/I' }}</td>
+			<td class="columnaE">{{ '%.2f%%' % afp.cuotaE if afp.cuotaE != None else 'S/I' }}</td>
 		</tr>
 		{% endfor %}
 		</tbody>

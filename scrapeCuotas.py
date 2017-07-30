@@ -1,0 +1,69 @@
+#!/home/flaskuser/myprojectenv/bin/python
+from app import app, db
+from app.models import AFP, Cuota, Patrimonio
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import and_
+import mechanicalsoup
+import locale
+from datetime import datetime
+
+fondos = ["A", "B", "C", "D", "E"]
+
+try:
+    locale.setlocale(locale.LC_TIME, 'es_ES')
+    browser = mechanicalsoup.StatefulBrowser(soup_config={'features': 'lxml'})
+    afps = AFP.query.all()
+
+    for f in fondos:
+        url = "http://www.safp.cl/safpstats/stats/apps/vcuofon/vcfAFP.php?tf="+f
+        browser.open(url)
+        page = browser.get_current_page()
+
+        fechaDisponible = page.find_all("td", class_="CONTENIDOdos")
+        fechaDisponible = fechaDisponible[1].get_text()
+        fechaDisponible = datetime.strptime(fechaDisponible, '%d-%b-%Y').date()
+
+        cuotas = page.find_all("td", class_="CONTENIDOcuatro")
+
+        tableFechas = page.find_all("table", class_="tw")
+        fecha = tableFechas[1].find("td", class_="EPIGRAFE")
+        fecha_str = fecha.get_text()
+        fecha_str = fecha_str.split(' ')[0].strip()
+
+        print("Fecha disponible: "+str(fechaDisponible))
+        fecha = datetime.strptime(fecha_str, '%d-%B-%Y').date()
+
+        if fecha.weekday() >= 5:
+            print("Fecha es en FDS: Skipped!")
+            continue
+        
+        for afp in afps:
+            print(afp.nombre)
+            closest = Cuota.query.filter(
+                      and_(Cuota.AFP_id == afp.id, Cuota.fondo == f)).order_by(Cuota.fecha.desc()).first()
+
+
+            print(closest)
+            if closest.fecha < fechaDisponible:
+                print("Guardando")
+                indice_cuota = (afp.id - 1) * 2
+                indice_patrimonio = (afp.id * 2) - 1
+                valorCuota = float(cuotas[indice_cuota].get_text().replace(".", "").replace(",", "."))
+
+                cuota_a_guardar = Cuota(fecha=fecha,AFP_id=afp.id,valor=valorCuota,fondo=f) 
+                db.session.add(cuota_a_guardar)
+
+                patrimonio_a_guardar = Patrimonio(fecha=fecha,AFP_id=afp.id,valor=int(cuotas[indice_patrimonio].get_text().replace(".","")), fondo=f)
+                db.session.add(patrimonio_a_guardar)
+
+                try:
+                    db.session.commit()
+
+                except Exception as e:
+                    print("Duplicado")
+                    continue
+            else:
+                print("Esa fecha ya está: "+str(closest.fecha))
+
+except Exception as e:
+    raise(e)

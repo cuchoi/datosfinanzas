@@ -42,7 +42,7 @@
     function colorTable() {
           $('.tablarentabilidad').each(function() {
             var columnas = ["A","B","C","D","E"];
-            console.log("holi");
+
             for(var j = 0; j < columnas.length ; j++){
                 var colObj = $(this).find("td.columna"+columnas[j]);
                 var colNum = colObj.text().split("%").map(Number);
@@ -103,7 +103,6 @@
       startDate: start,
       endDate: end,
       isInvalidDate: function(date) {
-        console.log(date);
 
         if (date.isoWeekday() !== 6 && date.isoWeekday() !== 7) {
             return false;
@@ -128,13 +127,20 @@
             $('#tablapersonalizado tbody tr').remove();
 
             data[0].forEach(function(afp) {
+
+                afp["cuotaA"] == null ? afp["cuotaA"] = "S/I" : afp["cuotaA"] = afp["cuotaA"]+"%";
+                afp["cuotaB"] == null ? afp["cuotaB"] = "S/I" : afp["cuotaB"] = afp["cuotaB"]+"%";
+                afp["cuotaC"] == null ? afp["cuotaC"] = "S/I" : afp["cuotaC"] = afp["cuotaC"]+"%";
+                afp["cuotaD"] == null ? afp["cuotaD"] = "S/I" : afp["cuotaD"] = afp["cuotaD"]+"%";
+                afp["cuotaE"] == null ? afp["cuotaE"] = "S/I" : afp["cuotaE"] = afp["cuotaE"]+"%";
+
                $('#tablapersonalizado tbody').append(`<tr>
-                <th><strong>`+afp["nombre"]+`%</strong></th>
-                <td class="columnaA">`+afp["cuotaA"]+`%</td>
-                <td class="columnaB">`+afp["cuotaB"]+`%</td>
-                <td class="columnaC">`+afp["cuotaC"]+`%</td>
-                <td class="columnaD">`+afp["cuotaD"]+`%</td>
-                <td class="columnaE">`+afp["cuotaE"]+`%</td>
+                <th><strong>`+afp["nombre"]+`</strong></th>
+                <td class="columnaA">`+afp["cuotaA"]+`</td>
+                <td class="columnaB">`+afp["cuotaB"]+`</td>
+                <td class="columnaC">`+afp["cuotaC"]+`</td>
+                <td class="columnaD">`+afp["cuotaD"]+`</td>
+                <td class="columnaE">`+afp["cuotaE"]+`</td>
                 </tr>`);
             });
 
