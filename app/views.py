@@ -6,22 +6,22 @@ from datetime import datetime, date, timedelta
 from sqlalchemy import and_, exc
 import pygal
 
-fondos = [ "A","B", "C", "D", "E"]
+fondos = ["A", "B", "C", "D", "E"]
 AFPs = ["capital", "cuprum", "habitat", "modelo", "planvital"]
 
 @app.route('/')
 @app.route('/index', methods=['GET'])
 def index():
-    usuario = {'nombre': 'Fernando'}
-
-    return render_template('index.html', usuario=usuario)
+    return render_template('index.html')
 
 @app.route('/contacto')
 def contacto():
     return render_template('contacto.html')
 
-@app.route('/afp/personalizado/req', methods=['POST'])
-def request_personalizado():
+@app.route('/afp/personalizado/req/<int:decimales>', methods=['POST'])
+def request_personalizado(decimales):
+    data = []
+
     try:
         inicio_usuario = datetime.strptime(request.form['inicio'], '%Y-%m-%d')
         final_usuario = datetime.strptime(request.form['final'], '%Y-%m-%d')
@@ -42,7 +42,7 @@ def request_personalizado():
                 if cuotaFinal is None or cuotaInicio is None:
                     rentabilidadPer[f] = "S/I"
                 else:
-                    rentabilidadPer[f] = "%.2f" % round(((cuotaFinal.valor/cuotaInicio.valor)-1)*100,2) +"%"
+                    rentabilidadPer[f] = round(((cuotaFinal.valor/cuotaInicio.valor)-1)*100,decimales)
 
             AFPPersonalizado.append({
             'nombre': afp.nombre.title(),
@@ -58,7 +58,12 @@ def request_personalizado():
     except Exception as e:
         render_template("500.html", error = str(e))
 
-    return jsonify(AFPPersonalizado)
+    grafico = crearGraficoBarraDesdeDict("Rentabilidad (%)", AFPPersonalizado)
+
+    data.append(AFPPersonalizado)
+    data.append(grafico)
+
+    return jsonify(data)
 
 @app.route('/afp')
 @app.route('/afp/<tab>')
@@ -76,12 +81,10 @@ def afp(tab = "hoy"):
     AFPAnioTD = []
 
     rentabilidadDiaria = {}
-    rentabilidadDiariaGraph = {}
     rentabilidadMensual = {}
     rentabilidadAnual = {}
 
     afps = AFP.query.all()
-    datosGraficoDiario = []
     for afp in afps:
         for f in fondos:
             cuotaHoy = afp.cuotas.filter(and_(Cuota.fecha == hoy, Cuota.fondo == f)).first()
@@ -91,22 +94,18 @@ def afp(tab = "hoy"):
 
             if cuotaHoy == None or cuotaAyer == None:
                 rentabilidadDiaria[f]="S/I"
-                rentabilidadDiariaGraph[f] = 0
             else:
-                rentabilidadDiaria[f] = "%.2f" % round(((cuotaHoy.valor/cuotaAyer.valor)-1)*100,2) +"%"
-                rentabilidadDiariaGraph[f] = round(((cuotaHoy.valor/cuotaAyer.valor)-1)*100,3)
+                rentabilidadDiaria[f] = round(((cuotaHoy.valor/cuotaAyer.valor)-1)*100,3)
 
             if cuotaHoy == None or cuotaMesTD == None:
                 rentabilidadMensual[f]="S/I"
             else:
-                rentabilidadMensual[f] = "%.2f" % round(((cuotaHoy.valor/cuotaMesTD.valor)-1)*100,2) +"%"
+                rentabilidadMensual[f] = round(((cuotaHoy.valor/cuotaMesTD.valor)-1)*100,3)
 
             if cuotaHoy == None or cuotaAnioTD == None:
                 rentabilidadAnual[f]="S/I"
             else:
-                rentabilidadAnual[f] = "%.2f" % round(((cuotaHoy.valor/cuotaAnioTD.valor)-1)*100,2) +"%"
-
-        datosGraficoDiario.append([afp.nombre,[rentabilidadDiariaGraph['A'],rentabilidadDiariaGraph['B'],rentabilidadDiariaGraph['C'],rentabilidadDiariaGraph['D'],rentabilidadDiariaGraph['E']]])
+                rentabilidadAnual[f] = round(((cuotaHoy.valor/cuotaAnioTD.valor)-1)*100,3)
 
         AFPDiaria.append({
             'nombre': afp.nombre.title(),
@@ -133,7 +132,7 @@ def afp(tab = "hoy"):
             'cuotaE': rentabilidadAnual['E']
                 })
 
-    graph_dia = crearGraficoBarra("Rentabilidad Diaria (%)", ["A","B","C","D","E"], datosGraficoDiario)
+    graph_dia = crearGraficoBarraDesdeDict("Rentabilidad Diaria (%)", AFPDiaria)
 
     return render_template('afp.html',
                             usuario = usuario,
@@ -146,7 +145,7 @@ def afp(tab = "hoy"):
                             ayer = ayer,
                             request=request,
                             active=tab,
-                            graph_dia_data = graph_dia.render_data_uri())
+                            graph_dia_data = graph_dia)
 
 @app.route('/ffmm')
 def ffmm():
@@ -392,6 +391,34 @@ def crearGraficoBarra(titulo, datosEjeX, datosBarra):
 
     except Exception as e:
         raise(e)
+
+def crearGraficoBarraDesdeDict(titulo, dictionarioDatos):
+    datosGraficoDiario = []
+    for afp in dictionarioDatos:
+        rentA = afp['cuotaA']
+        rentB = afp['cuotaB']
+        rentC = afp['cuotaC']
+        rentD = afp['cuotaD']
+        rentE = afp['cuotaE']
+
+        if rentA == "S/I":
+            rentA == 0
+
+        if rentB == "S/I":
+            rentB == 0
+
+        if rentC == "S/I":
+            rentC == 0
+
+        if rentD == "S/I":
+            rentD == 0
+
+        if rentE == "S/I":
+            rentE == 0
+
+        datosGraficoDiario.append([afp['nombre'],[rentA,rentB,rentC,rentD,rentE]])
+
+    return crearGraficoBarra(titulo, ["A","B","C","D","E"], datosGraficoDiario).render_data_uri()
 
 @app.errorhandler(404)
 def not_found_error(error):

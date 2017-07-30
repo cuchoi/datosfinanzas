@@ -99,7 +99,7 @@
           format: 'DD/MM/YY',
           firstDay: 1
       },
-      "autoApply": true,
+      //"autoApply": true,
       startDate: start,
       endDate: end,
       isInvalidDate: function(date) {
@@ -123,24 +123,25 @@
     }, cb);
 
     $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
-        var jqxhr = $.post( "/afp/personalizado/req", { inicio: picker.startDate.format('YYYY-MM-DD'), final: picker.endDate.format('YYYY-MM-DD') },  function(data) {
+
+        var jqxhr = $.post( "/afp/personalizado/req/2", { inicio: picker.startDate.format('YYYY-MM-DD'), final: picker.endDate.format('YYYY-MM-DD') },  function(data) {
             $('#tablapersonalizado tbody tr').remove();
 
-            data.forEach(function(afp) {
-               console.log(afp);
+            data[0].forEach(function(afp) {
                $('#tablapersonalizado tbody').append(`<tr>
-                <th><strong>`+afp["nombre"]+`</strong></th>
-                <td class="columnaA">`+afp["cuotaA"]+`</td>
-                <td class="columnaB">`+afp["cuotaB"]+`</td>
-                <td class="columnaC">`+afp["cuotaC"]+`</td>
-                <td class="columnaD">`+afp["cuotaD"]+`</td>
-                <td class="columnaE">`+afp["cuotaE"]+`</td>
+                <th><strong>`+afp["nombre"]+`%</strong></th>
+                <td class="columnaA">`+afp["cuotaA"]+`%</td>
+                <td class="columnaB">`+afp["cuotaB"]+`%</td>
+                <td class="columnaC">`+afp["cuotaC"]+`%</td>
+                <td class="columnaD">`+afp["cuotaD"]+`%</td>
+                <td class="columnaE">`+afp["cuotaE"]+`%</td>
                 </tr>`);
-           });
+            });
 
-                       console.log(data[0]["inicio"]);
-
-           // data[0]["final"]
+            $('#mensajediahabil').remove();
+            $('#graficopersonalizado').remove();
+            $('#personalizadoside').append("<embed id='graficopersonalizado' type='image/svg+xml' src='"+data[1]+
+                "'/>");
 
         })
         .done(function() {

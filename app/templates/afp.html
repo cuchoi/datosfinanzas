@@ -36,11 +36,11 @@
 		{% for afp in AFPDiaria %}
 		<tr>
 			<td><strong>{{ afp.nombre }}</strong></td>
-			<td class="columnaA">{{ afp.cuotaA }}</td>
-			<td class="columnaB">{{ afp.cuotaB }}</td>
-			<td class="columnaC">{{ afp.cuotaC }}</td>
-			<td class="columnaD">{{ afp.cuotaD }}</td>
-			<td class="columnaE">{{ afp.cuotaE }}</td>
+			<td class="columnaA">{{ '%.3f' % afp.cuotaA }}%</td>
+			<td class="columnaB">{{ '%.3f' % afp.cuotaB }}%</td>
+			<td class="columnaC">{{ '%.3f' % afp.cuotaC }}%</td>
+			<td class="columnaD">{{ '%.3f' % afp.cuotaD }}%</td>
+			<td class="columnaE">{{ '%.3f' % afp.cuotaE }}%</td>
 		</tr>
 		{% endfor %}
 		</tbody>
@@ -65,11 +65,11 @@
 		{% for afp in AFPMensual %}
 		<tr>
 			<td><strong>{{ afp.nombre }}</strong></td>
-			<td class="columnaA">{{ afp.cuotaA }}</td>
-			<td class="columnaB">{{ afp.cuotaB }}</td>
-			<td class="columnaC">{{ afp.cuotaC }}</td>
-			<td class="columnaD">{{ afp.cuotaD }}</td>
-			<td class="columnaE">{{ afp.cuotaE }}</td>
+			<td class="columnaA">{{ '%.2f' % afp.cuotaA }}%</td>
+			<td class="columnaB">{{ '%.2f' % afp.cuotaB }}%</td>
+			<td class="columnaC">{{ '%.2f' % afp.cuotaC }}%</td>
+			<td class="columnaD">{{ '%.2f' % afp.cuotaD }}%</td>
+			<td class="columnaE">{{ '%.2f' % afp.cuotaE }}%</td>
 		</tr>
 	    {% endfor %}
 		</tbody>
@@ -94,11 +94,11 @@
 		<tr>
 		{% for afp in AFPAnual %}
 			<td><strong>{{ afp.nombre }}</strong></td>
-			<td class="columnaA">{{ afp.cuotaA }}</td>
-			<td class="columnaB">{{ afp.cuotaB }}</td>
-			<td class="columnaC">{{ afp.cuotaC }}</td>
-			<td class="columnaD">{{ afp.cuotaD }}</td>
-			<td class="columnaE">{{ afp.cuotaE }}</td>
+			<td class="columnaA">{{ '%.2f' % afp.cuotaA }}%</td>
+			<td class="columnaB">{{ '%.2f' % afp.cuotaB }}%</td>
+			<td class="columnaC">{{ '%.2f' % afp.cuotaC }}%</td>
+			<td class="columnaD">{{ '%.2f' % afp.cuotaD }}%</td>
+			<td class="columnaE">{{ '%.2f' % afp.cuotaE }}%</td>
 		</tr>
 		{% endfor %}
 		</tbody>
@@ -145,12 +145,12 @@
 
 	<div class="side rentabilidad" id="hoyside">
 
-	   <embed type="image/svg+xml" src= {{graph_dia_data|safe}} />
+	   <embed type="image/svg+xml" src="{{graph_dia_data|safe}}"/>
 
 	</div>
 
 	<div class="side rentabilidad" id="personalizadoside">
-		<article class="message is-info">
+		<article id="mensajediahabil" class="message is-info">
 		  <div class="message-header">
 		    <p>Ojo</p>
 		    <button class="delete"></button>
