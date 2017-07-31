@@ -91,8 +91,8 @@
 		  </tr>
 		</thead>
 		<tbody>
-		<tr>
 		{% for afp in AFPAnual %}
+		<tr>
 			<td><strong>{{ afp.nombre }}</strong></td>
 			<td class="columnaA">{{ '%.2f%%' % afp.cuotaA if afp.cuotaA != None else 'S/I' }}</td>
 			<td class="columnaB">{{ '%.2f%%' % afp.cuotaB if afp.cuotaB != None else 'S/I' }}</td>
@@ -101,6 +101,7 @@
 			<td class="columnaE">{{ '%.2f%%' % afp.cuotaE if afp.cuotaE != None else 'S/I' }}</td>
 		</tr>
 		{% endfor %}
+
 		</tbody>
 	</table>
 	</div>
