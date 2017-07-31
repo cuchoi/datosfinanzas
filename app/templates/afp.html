@@ -146,9 +146,10 @@
 {% block sidebar %}
 
 	<div class="side rentabilidad" id="hoyside">
-		    <figure>
-	   <embed type="image/svg+xml" src="{{graph_dia_data|safe}}"/>
-		    </figure>
+	  
+
+	   <!--[if !IE]><!--><embed type="image/svg+xml" src="{{graph_dia_data|safe}}"/><!--<![endif]-->
+		<!--[if IE]><img type="image/svg+xml" src="{{graph_dia_data|safe}}"/></script><![endif]-->
 
 	</div>
 
