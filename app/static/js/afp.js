@@ -1,5 +1,4 @@
  document.addEventListener('DOMContentLoaded', function () {
-
     if ($('.tab').length){
        var tabSeleccionado = $("#tabs li.is-active");
        var tabAMostrar = tabSeleccionado.children().attr('data-tab');
@@ -133,15 +132,14 @@
                 afp["cuotaC"] == null ? afp["cuotaC"] = "S/I" : afp["cuotaC"] = afp["cuotaC"]+"%";
                 afp["cuotaD"] == null ? afp["cuotaD"] = "S/I" : afp["cuotaD"] = afp["cuotaD"]+"%";
                 afp["cuotaE"] == null ? afp["cuotaE"] = "S/I" : afp["cuotaE"] = afp["cuotaE"]+"%";
-
-               $('#tablapersonalizado tbody').append(`<tr>
-                <th><strong>`+afp["nombre"]+`</strong></th>
-                <td class="columnaA">`+afp["cuotaA"]+`</td>
-                <td class="columnaB">`+afp["cuotaB"]+`</td>
-                <td class="columnaC">`+afp["cuotaC"]+`</td>
-                <td class="columnaD">`+afp["cuotaD"]+`</td>
-                <td class="columnaE">`+afp["cuotaE"]+`</td>
-                </tr>`);
+               
+               $('#tablapersonalizado tbody').append('<tr><th><strong>'+afp["nombre"]+
+                '</strong></th><td class="columnaA">'+afp["cuotaA"]+
+                '</td><td class="columnaB">'+afp["cuotaB"]+
+                '</td><td class="columnaC">'+afp["cuotaC"]+
+                '</td><td class="columnaD">'+afp["cuotaD"]+
+                '</td><td class="columnaE">'+afp["cuotaE"]+
+                '</td></tr>');
             });
 
             $('#mensajediahabil').remove();
