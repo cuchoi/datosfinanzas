@@ -26,8 +26,8 @@ def request_personalizado(decimales):
         inicio_usuario = datetime.strptime(request.form['inicio'], '%Y-%m-%d')
         final_usuario = datetime.strptime(request.form['final'], '%Y-%m-%d')
 
-        inicio = getUltimaFechaCuota("", inicio_usuario)
-        final = getUltimaFechaCuota("", final_usuario)
+        inicio = getUltimaFechaCuota(None, inicio_usuario)
+        final = getUltimaFechaCuota(None, final_usuario)
 
         rentabilidadPer = {}
         AFPPersonalizado = []
@@ -62,6 +62,7 @@ def request_personalizado(decimales):
 
     data.append(AFPPersonalizado)
     data.append(grafico)
+    data.append([inicio, final])
 
     return jsonify(data)
 
@@ -72,9 +73,9 @@ def afp(tab = "hoy"):
 
     # Hoy en realidad es el último día para el cual tenemos datos
     hoy = getUltimaFechaCuota()
-    ayer = getUltimaFechaCuota("", hoy-timedelta(1))
-    mesTD = getUltimaFechaCuota("",hoy.replace(day=1))
-    anioTD = getUltimaFechaCuota("",hoy.replace(day=1).replace(month=1))
+    ayer = getUltimaFechaCuota(None, hoy-timedelta(1))
+    mesTD = getUltimaFechaCuota(None, hoy.replace(day=1))
+    anioTD = getUltimaFechaCuota(None, hoy.replace(day=1).replace(month=1))
 
     AFPDiaria = []
     AFPMesTD = []
@@ -174,16 +175,16 @@ def ffmm():
                             BancoChile = BancoChile, request=request)
 
 # date: Date of refence. Empty: Last in the database
-def getUltimaFechaCuota(afp = "", date= ""):
+def getUltimaFechaCuota(afp=None, date= ""):
     if date:
         if afp:
-            closest = Cuota.query.filter(_and(AFP.nombre == afp, Cuota.fecha<=date)).order_by(Cuota.fecha.desc()).first()
+            closest = Cuota.query.filter(_and(Cuota.AFP_id == afp.id, Cuota.fecha<=date)).order_by(Cuota.fecha.desc()).first()
         else:
             closest = Cuota.query.filter(Cuota.fecha<=date).order_by(Cuota.fecha.desc()).first()
 
     else:
         if afp:
-            closest = Cuota.query.filter(AFP.nombre == afp).order_by(Cuota.fecha.desc()).first()
+            closest = Cuota.query.filter(Cuota.AFP_id == afp.idCuota.AFP_id == afp.id,).order_by(Cuota.fecha.desc()).first()
         else:
             closest = Cuota.query.order_by(Cuota.fecha.desc()).first()
 
@@ -401,8 +402,6 @@ def crearGraficoBarraDesdeDict(titulo, dictionarioDatos):
         rentD = afp['cuotaD']
         rentE = afp['cuotaE']
 
-
-        print(rentA)
         if rentA == None:
             rentA = 0
 
@@ -419,8 +418,6 @@ def crearGraficoBarraDesdeDict(titulo, dictionarioDatos):
             rentE = 0
 
         datosGraficoDiario.append([afp['nombre'],[rentA,rentB,rentC,rentD,rentE]])
-
-        print(datosGraficoDiario)
 
     return crearGraficoBarra(titulo, ["A","B","C","D","E"], datosGraficoDiario).render_data_uri()
 

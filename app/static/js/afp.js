@@ -149,6 +149,16 @@
             $('#personalizadoside').append("<embed id='graficopersonalizado' type='image/svg+xml' src='"+data[1]+
                 "'/>");
 
+
+            console.log(data[2][0]);
+            var inicio = moment.parseZone(data[2][0]).format("DD-MM-YY");
+            var final = moment.parseZone(data[2][1]).format("DD-MM-YY");
+
+            console.log(inicio);
+
+
+            $('#fechainiciopersonalizado').text(inicio);
+            $('#fechafinalpersonalizado').text(final);
         })
         .done(function() {
             colorTable();
