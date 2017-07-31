@@ -1,3 +1,17 @@
+ jQuery.cachedScript = function( url, options ) {
+
+  // Allow user to set any option except for dataType, cache, and url
+  options = $.extend( options || {}, {
+    dataType: "script",
+    cache: true,
+    url: url
+  });
+
+  // Use $.ajax() since it is more flexible than $.getScript
+  // Return the jqXHR object so we can chain callbacks
+  return jQuery.ajax( options );
+};
+
  document.addEventListener('DOMContentLoaded', function () {
     if ($('.tab').length){
        var tabSeleccionado = $("#tabs li.is-active");
@@ -144,8 +158,8 @@
 
             $('#mensajediahabil').remove();
             $('#graficopersonalizado').remove();
-            $('#personalizadoside').append("<embed id='graficopersonalizado' type='image/svg+xml' src='"+data[1]+
-                "'/>");
+            $('#personalizadoside').append("<figure>"+data[1]+
+                "<figure/>");
 
 
             console.log(data[2][0]);
@@ -157,6 +171,11 @@
 
             $('#fechainiciopersonalizado').text(inicio);
             $('#fechafinalpersonalizado').text(final);
+
+            $.cachedScript( "http://kozea.github.com/pygal.js/latest/pygal-tooltips.min.js" ).done(function( script, textStatus ) {
+                console.log( textStatus );
+            });
+
         })
         .done(function() {
             colorTable();

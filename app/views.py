@@ -61,7 +61,7 @@ def request_personalizado(decimales):
     grafico = crearGraficoBarraDesdeDict("Rentabilidad (%)", AFPPersonalizado)
 
     data.append(AFPPersonalizado)
-    data.append(grafico)
+    data.append(grafico.render())
     data.append([inicio, final])
 
     return jsonify(data)
@@ -133,7 +133,7 @@ def afp(tab = "hoy"):
             'cuotaE': rentabilidadAnual['E']
                 })
 
-    graph_dia = crearGraficoBarraDesdeDict("Rentabilidad Diaria (%)", AFPDiaria)
+    graph_dia = crearGraficoBarraDesdeDict("Rentabilidad Diaria (%)", AFPDiaria).render()
 
     return render_template('afp.html',
                             usuario = usuario,
@@ -381,7 +381,7 @@ def load_csv():
 def crearGraficoBarra(titulo, datosEjeX, datosBarra):
     try:
         custom_style = pygal.style.Style(label_font_size=20, title_font_size=30, legend_font_size =20 , tooltip_font_size=20     )
-        graph = pygal.Bar(legend_at_bottom=True, legend_box_size=30, style=custom_style)
+        graph = pygal.Bar(legend_at_bottom=True, legend_box_size=30, style=custom_style, disable_xml_declaration=True)
         graph.title = titulo
         graph.x_labels = datosEjeX
 
@@ -419,7 +419,7 @@ def crearGraficoBarraDesdeDict(titulo, dictionarioDatos):
 
         datosGraficoDiario.append([afp['nombre'],[rentA,rentB,rentC,rentD,rentE]])
 
-    return crearGraficoBarra(titulo, ["A","B","C","D","E"], datosGraficoDiario).render_data_uri()
+    return crearGraficoBarra(titulo, ["A","B","C","D","E"], datosGraficoDiario)
 
 @app.errorhandler(404)
 def not_found_error(error):

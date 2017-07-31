@@ -135,21 +135,16 @@
 
 		</tbody>
 	</table>
-
-
 	</div>
-
-
 
 {% endblock content %}
 	
 {% block sidebar %}
 
 	<div class="side rentabilidad" id="hoyside">
-	  
-
-	   <!--[if !IE]><!--><embed type="image/svg+xml" src="{{graph_dia_data|safe}}"/><!--<![endif]-->
-		<!--[if IE]><img type="image/svg+xml" src="{{graph_dia_data|safe}}"/></script><![endif]-->
+	     <figure>
+	      {{ graph_dia_data |safe }}
+    	</figure>
 
 	</div>
 
@@ -173,6 +168,7 @@
 <!--  <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>-->
  <script src="{{ url_for('static', filename='js/afp.js') }}"></script> 
  <script src="{{ url_for('static', filename='js/sorttable.js') }}"></script> 
+ <script type="text/javascript" src="http://kozea.github.com/pygal.js/latest/pygal-tooltips.min.js"></script>
 
 {% endblock %}
 
