@@ -32,12 +32,8 @@ try:
         fecha_str = fecha.get_text()
         fecha_str = fecha_str.split(' ')[0].strip()
 
-        print("Fecha disponible: "+str(fechaDisponible))
+        print("Fecha disponible: "+str(fecha_str))
         fecha = datetime.strptime(fecha_str, '%d-%B-%Y').date()
-
-        if fecha.weekday() >= 5:
-            print("Fecha es en FDS: Skipped!")
-            continue
         
         for afp in afps:
             closest_cuota = Cuota.query.filter(
@@ -48,7 +44,12 @@ try:
 
             if closest_cuota.fecha < fechaDisponible:
                 indice_cuota = (afp.id - 1) * 2
-                valorCuota = float(cuotas[indice_cuota].get_text().replace(".", "").replace(",", "."))
+
+                try:
+                    valorCuota = float(cuotas[indice_cuota].get_text().replace(".", "").replace(",", "."))
+                except ValueError:
+                    print("Not a float")
+                    continue
 
                 cuota_a_guardar = Cuota(fecha=fecha,AFP_id=afp.id,valor=valorCuota,fondo=f) 
                 db.session.add(cuota_a_guardar)
