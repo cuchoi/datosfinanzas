@@ -60,6 +60,7 @@ try:
 
                 except Exception as e:
                     print("Duplicado u otro error: "+str(e))
+                    db.session.rollback()
                     continue
 
             if closest_patrimonio.fecha < fechaDisponible:
