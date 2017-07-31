@@ -12,7 +12,7 @@
 
        $('#tabs li').removeClass("is-active");
        tabSeleccionado.addClass( "is-active" );
-   };
+   }
 
 
    $('button.delete').click(function(){
