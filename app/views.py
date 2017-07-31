@@ -423,7 +423,7 @@ def crearGraficoBarraDesdeDict(titulo, dictionarioDatos):
 
 @app.errorhandler(404)
 def not_found_error(error):
-    app.logger.error(exception)
+    app.logger.error(error)
     return render_template('404.html'), 404
 
 @app.errorhandler(500)
