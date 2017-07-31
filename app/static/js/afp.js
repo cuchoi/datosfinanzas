@@ -61,8 +61,13 @@
                 var colNum = colObj.text().split("%").map(Number);
                 colNum.splice(6, 1);
                 
+                var pintar = true;
                 var len = colNum.length;
                 for (var i = 1; i < len; i++) {
+                    if(isNaN(colNum[i])){
+                        pintar = false;
+                        break;
+                    }
                     var tmp = colNum[i]; //Copy of the current element. 
                     var objtmp = colObj[i];
                     /*Check through the sorted part and compare with the number in tmp. If large, shift the number*/
@@ -77,20 +82,17 @@
                     colObj[l + 1] = objtmp;
                 }
 
+                if(pintar){
                 colObj.eq(0).css({'background-color':'rgba(215,48,39,0.2)'});
                // colObj.eq(1).css({'background-color':'rgba(252,141,89,0.2)'});
                // colObj.eq(2).css({'background-color':'rgba(254,224,139,0.2)'});
                // colObj.eq(3).css({'background-color':'rgba(217,239,139,0.2)'});
                // colObj.eq(4).css({'background-color':'rgba(145,207,96,0.2)'});
                 colObj.eq(5).css({'background-color':'rgba(26,152,80,0.2)'});
+               }
               }
-
       });
-
-
     }
-
-
 
    var today = new Date();
    var dd = today.getDate();

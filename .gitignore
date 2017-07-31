@@ -15,6 +15,7 @@ _mailinglist
 .idea/
 flask/
 run.py
+*.db
 
 # Coverage reports
 htmlcov
