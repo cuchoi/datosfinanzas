@@ -1,26 +1,36 @@
 {% extends "base.html" %}
 
 {% block hero %}
-	<section class="hero is-primary">
-	<div class="container">
-    <div class="titulo columns is-vcentered">
-      <div class="column is-4">
-        <p class="title">{% block titulo %}{% endblock titulo %}</p>
-      </div>
-      <div class="column is-8">
-        <div class="bsa-cpc"></div>
+<section class="hero is-primary">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-vcentered">
+        <div class="column">
+          <p class="title">
+            {% block titulo %}{% endblock titulo %}
+          </p>
+          <p class="subtitle">
+            {% block subtitulo %}{% endblock subtitulo %}
+          </p>
+        </div>
+        <div class="column is-narrow">
+          <!-- <div id="carbon" class="box"> 
+          </div> -->
+        </div>
       </div>
     </div>
-    </div>
+  </div>
+
   <div class="container">
     <nav class="tabs is-boxed">
      <ul id="tabs">
-    {% block menu %}	
+    {% block menu %}  
     {% endblock %}
     </ul>  
   </nav>
   </div> 
- </section>
+  </section>
+
 {% endblock%}
 
 {% block content %}  

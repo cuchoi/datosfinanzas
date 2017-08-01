@@ -158,7 +158,7 @@
                 '</td></tr>');
             });
 
-            $('#mensajediahabil').remove();
+            //$('#mensajediahabil').remove();
             $('#graficopersonalizado').remove();
             $('#personalizadoside').append('<figure id="graficopersonalizado">'+data[1]+
                 '<figure/>');
