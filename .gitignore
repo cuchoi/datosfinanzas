@@ -16,6 +16,7 @@ _mailinglist
 flask/
 run.py
 app.db
+python.log
 
 # Coverage reports
 htmlcov

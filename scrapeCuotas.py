@@ -48,6 +48,7 @@ try:
             if closest_cuota.fecha < fechaDisponible:
                 indice_cuota = (afp.id - 1) * 2
 
+                cuota = False
                 finde = False
 
                 try:
@@ -60,27 +61,31 @@ try:
                     # Viernes
                     cuota_a_guardar = Cuota(fecha=dia_anterior,AFP_id=afp.id,valor=valorCuota,fondo=f)
                     db.session.add(cuota_a_guardar)
+                    cuota = True
                     finde = True
-
                 elif(dia_de_la_semana == 6 and closest_cuota.fecha < dia_antesdeayer):
                     # Viernes
                     cuota_a_guardar = Cuota(fecha=dia_antesdeayer,AFP_id=afp.id,valor=valorCuota,fondo=f)
                     db.session.add(cuota_a_guardar)
+                    cuota = True
                     finde = True
-                else:
+                elif(dia_de_la_semana < 5):
                     cuota_a_guardar = Cuota(fecha=fecha,AFP_id=afp.id,valor=valorCuota,fondo=f) 
                     db.session.add(cuota_a_guardar)
+                    cuota = True
 
-                try:
-                    db.session.commit()
-                    print("Guardado Cuota: "+str(cuota_a_guardar))
-                    if finde:
-                        print("Se guardó viernes desde el finde")
 
-                except Exception as e:
-                    print("Duplicado u otro error: "+str(e))
-                    db.session.rollback()
-                    continue
+                if cuota:
+                    try:
+                        db.session.commit()
+                        print("Guardado Cuota: "+str(cuota_a_guardar))
+                        if finde:
+                            print("Se guardó viernes desde el finde")
+
+                    except Exception as e:
+                        print("Duplicado u otro error: "+str(e))
+                        db.session.rollback()
+                        continue
 
             if closest_patrimonio.fecha < fechaDisponible:
                 indice_patrimonio = (afp.id * 2) - 1
@@ -91,33 +96,39 @@ try:
                     print("Not a int")
                     continue
 
+                cuota = False
                 finde = False
+
 
                 if valorPatrimonio>0:
                     if(dia_de_la_semana == 5 and closest_patrimonio.fecha < dia_anterior):
-                        # Viernes o Sabado
+                        # Viernes
                         patrimonio_a_guardar = Patrimonio(fecha=dia_anterior,AFP_id=afp.id,valor=valorPatrimonio, fondo=f)
                         db.session.add(patrimonio_a_guardar)
+                        cuota = True
                         finde = True
 
                     elif(dia_de_la_semana == 6 and closest_patrimonio.fecha < dia_antesdeayer):
                         # Viernes
                         patrimonio_a_guardar = Patrimonio(fecha=dia_antesdeayer,AFP_id=afp.id,valor=valorPatrimonio, fondo=f)
                         db.session.add(patrimonio_a_guardar)
+                        cuota = True
                         finde = True
-                    else:
+                    elif(dia_de_la_semana < 5):
                         patrimonio_a_guardar = Patrimonio(fecha=fecha,AFP_id=afp.id,valor=valorPatrimonio, fondo=f)
                         db.session.add(patrimonio_a_guardar)
+                        cuota = True
 
-                    try:
-                        db.session.commit()
-                        print("Guardado Patrimonio: "+str(patrimonio_a_guardar))
-                        if finde:
-                            print("Se guardó viernes desde el finde")
+                    if cuota:
+                        try:
+                            db.session.commit()
+                            print("Guardado Patrimonio: "+str(patrimonio_a_guardar))
+                            if finde:
+                                print("Se guardó viernes desde el finde")
 
-                    except Exception as e:
-                        print("Duplicado u otro error: "+str(e))
-                        continue
+                        except Exception as e:
+                            print("Duplicado u otro error: "+str(e))
+                            continue
             # else:
             #     print("Esa fecha ya está: "+str(closest.fecha))
 

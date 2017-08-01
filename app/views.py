@@ -5,6 +5,13 @@ from .models import AFP, Cuota, Patrimonio
 from datetime import datetime, date, timedelta
 from sqlalchemy import and_, exc
 import pygal
+# from wtforms import form, fields, validators
+# import flask_admin as admin
+# import flask_login as login
+# from flask_admin.contrib import sqla
+# from flask_admin import helpers, expose
+# from werkzeug.security import generate_password_hash, check_password_hash
+
 
 fondos = ["A", "B", "C", "D", "E"]
 AFPs = ["capital", "cuprum", "habitat", "modelo", "planvital"]
