@@ -160,8 +160,8 @@
 
             $('#mensajediahabil').remove();
             $('#graficopersonalizado').remove();
-            $('#personalizadoside').append("<figure>"+data[1]+
-                "<figure/>");
+            $('#personalizadoside').append('<figure id="graficopersonalizado">'+data[1]+
+                '<figure/>');
 
 
             console.log(data[2][0]);
