@@ -228,10 +228,12 @@ def scrapeSVS(browser):
         print("ERROR:"+str(e))
 
 if __name__ == "__main__":
-    print("Iniciando. Hora: "+str(datetime.now()))
+    print("------------------------------------------ Iniciando. Hora: "+str(datetime.now())+" -----------------------")
     browser = mechanicalsoup.StatefulBrowser(soup_config={'features': 'lxml'})
     scrapeCuprum(browser)
     scrapeProvida(browser)
     scrapeSVS(browser)
+
+    print("------------------------------------------ Terminó: "+str(datetime.now())+" -----------------------")
 
 
