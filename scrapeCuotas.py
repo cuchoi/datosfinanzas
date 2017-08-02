@@ -185,7 +185,7 @@ def scrapeSVS(browser):
                     try:
                         valorPatrimonio = int(cuotas[indice_patrimonio].get_text().replace(".",""))
                     except ValueError:
-                        print("Not a int")
+                        print("Not an int")
                         continue
 
                     cuota = False
@@ -229,6 +229,7 @@ def scrapeSVS(browser):
 
 if __name__ == "__main__":
     print("------------------------------------------ Iniciando. Hora: "+str(datetime.now())+" -----------------------")
+
     browser = mechanicalsoup.StatefulBrowser(soup_config={'features': 'lxml'})
     scrapeCuprum(browser)
     scrapeProvida(browser)

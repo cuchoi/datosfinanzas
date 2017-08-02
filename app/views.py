@@ -81,8 +81,8 @@ def afp(tab = "hoy"):
     # Hoy en realidad es el último día para el cual tenemos datos
     hoy = getUltimaFechaCuota()
     ayer = getUltimaFechaCuota(None, hoy-timedelta(1))
-    mesTD = getUltimaFechaCuota(None, hoy.replace(day=1))
-    anioTD = getUltimaFechaCuota(None, hoy.replace(day=1).replace(month=1))
+    mesTD = getUltimaFechaCuota(None, hoy.replace(day=1) - timedelta(days=1))
+    anioTD = getUltimaFechaCuota(None, hoy.replace(day=1).replace(month=1) - timedelta(days=1))
 
     AFPDiaria = []
     AFPMesTD = []
