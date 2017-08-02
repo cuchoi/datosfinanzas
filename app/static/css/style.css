@@ -2,22 +2,14 @@
   color: hsl(171, 100%, 41%);
 }
 
-.titulo{
-	padding: 25px;
-}
-
-.hero ul {
-    margin-left: 20px !important;
-}
-
 .tablarentabilidad{
-	margin-top: 20px;
   width: 100%;
 }
 
 .tablarentabilidad th {
   text-align: center;
 }
+
 .tablarentabilidad td {
   text-align: center;
 }
@@ -48,7 +40,6 @@
 table.sortable thead th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after { 
     content: " \25B4\25BE" 
 }
-
 
 .daterangepicker {
   position: absolute;

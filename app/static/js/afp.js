@@ -174,13 +174,15 @@
             $('#fechainiciopersonalizado').text(inicio);
             $('#fechafinalpersonalizado').text(final);
 
-            $.cachedScript( "http://kozea.github.com/pygal.js/latest/pygal-tooltips.min.js" ).done(function( script, textStatus ) {
-                console.log( textStatus );
-            });
 
         })
         .done(function() {
             colorTable();
+
+            $.cachedScript( "http://kozea.github.com/pygal.js/latest/pygal-tooltips.min.js" ).done(function( script, textStatus ) {
+                console.log( textStatus );
+            });
+
         })
         .fail(function() {
             console.log( "error" );
@@ -192,6 +194,10 @@
  
     cb(start, end);       
     colorTable();
+    $.cachedScript( "http://kozea.github.com/pygal.js/latest/pygal-tooltips.min.js" ).done(function( script, textStatus ) {
+        console.log( textStatus );
+    });
+
 });
 
  /**
