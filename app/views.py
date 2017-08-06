@@ -95,10 +95,10 @@ def afp(tab = "hoy"):
 
     afps = AFP.query.all()
     for afp in afps:
-        cuotaHoyTodas = afp.cuotas.filter(Cuota.fecha == hoy).all()
-        cuotaAyerTodas = afp.cuotas.filter(Cuota.fecha == ayer).all()
-        cuotaMesTDTodas = afp.cuotas.filter(Cuota.fecha == mesTD).all()
-        cuotaAnioTDTodas = afp.cuotas.filter(Cuota.fecha == anioTD).all()
+        cuotaHoyTodas = afp.cuotas.filter(Cuota.fecha == hoy).order_by(Cuota.fondo).all()
+        cuotaAyerTodas = afp.cuotas.filter(Cuota.fecha == ayer).order_by(Cuota.fondo).all()
+        cuotaMesTDTodas = afp.cuotas.filter(Cuota.fecha == mesTD).order_by(Cuota.fondo).all()
+        cuotaAnioTDTodas = afp.cuotas.filter(Cuota.fecha == anioTD).order_by(Cuota.fondo).all()
 
         for cuotaHoy,cuotaAyer,cuotaMesTD,cuotaAnioTD in zip(cuotaHoyTodas, cuotaAyerTodas, cuotaMesTDTodas, cuotaAnioTDTodas):
             f = cuotaHoy.fondo
