@@ -40,8 +40,8 @@ def request_personalizado(decimales):
         AFPPersonalizado = []
 
         for afp in AFP.query.all():
-            cuotaFinalTodos = afp.cuotas.filter(Cuota.fecha == final).all()
-            cuotaInicioTodos = afp.cuotas.filter(Cuota.fecha == inicio).all()
+            cuotaFinalTodos = afp.cuotas.filter(Cuota.fecha == final).order_by(Cuota.fondo).all()
+            cuotaInicioTodos = afp.cuotas.filter(Cuota.fecha == inicio).order_by(Cuota.fondo).all()
 
             for cuotaFinal, cuotaInicio in zip(cuotaFinalTodos, cuotaInicioTodos):
                 f = cuotaFinal.fondo
