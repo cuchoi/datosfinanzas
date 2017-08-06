@@ -40,12 +40,11 @@ def request_personalizado(decimales):
         AFPPersonalizado = []
 
         for afp in AFP.query.all():
-            for f in fondos:
-                cuotaFinal = afp.cuotas.filter(and_(Cuota.fecha == final,
-                                               Cuota.fondo == f)).first()
-                cuotaInicio = afp.cuotas.filter(and_(Cuota.fecha == inicio,
-                                                     Cuota.fondo == f)).first()
+            cuotaFinalTodos = afp.cuotas.filter(Cuota.fecha == final).all()
+            cuotaInicioTodos = afp.cuotas.filter(Cuota.fecha == inicio).all()
 
+            for cuotaFinal, cuotaInicio in zip(cuotaFinalTodos, cuotaInicioTodos):
+                f = cuotaFinal.fondo
                 if cuotaFinal is None or cuotaInicio is None:
                     rentabilidadPer[f] = None
                 else:
@@ -65,10 +64,12 @@ def request_personalizado(decimales):
     except Exception as e:
         render_template("500.html", error = str(e))
 
-    grafico = crearGraficoBarraDesdeDict("Rentabilidad (%)", AFPPersonalizado)
+    grafico = crearGraficoBarraDesdeDict("Rentabilidad (%)", AFPPersonalizado).render()
+
+    valores = [cuota.valor for cuota in Cuota.query.filter(and_(Cuota.fecha >= inicio, Cuota.fecha <= final)).all()]
 
     data.append(AFPPersonalizado)
-    data.append(grafico.render())
+    data.append(grafico)
     data.append([inicio, final])
 
     return jsonify(data)
@@ -94,11 +95,13 @@ def afp(tab = "hoy"):
 
     afps = AFP.query.all()
     for afp in afps:
-        for f in fondos:
-            cuotaHoy = afp.cuotas.filter(and_(Cuota.fecha == hoy, Cuota.fondo == f)).first()
-            cuotaAyer = afp.cuotas.filter(and_(Cuota.fecha == ayer, Cuota.fondo == f)).first()
-            cuotaMesTD = afp.cuotas.filter(and_(Cuota.fecha == mesTD, Cuota.fondo == f)).first()
-            cuotaAnioTD = afp.cuotas.filter(and_(Cuota.fecha == anioTD, Cuota.fondo == f)).first()
+        cuotaHoyTodas = afp.cuotas.filter(Cuota.fecha == hoy).all()
+        cuotaAyerTodas = afp.cuotas.filter(Cuota.fecha == ayer).all()
+        cuotaMesTDTodas = afp.cuotas.filter(Cuota.fecha == mesTD).all()
+        cuotaAnioTDTodas = afp.cuotas.filter(Cuota.fecha == anioTD).all()
+
+        for cuotaHoy,cuotaAyer,cuotaMesTD,cuotaAnioTD in zip(cuotaHoyTodas, cuotaAyerTodas, cuotaMesTDTodas, cuotaAnioTDTodas):
+            f = cuotaHoy.fondo
 
             if cuotaHoy == None or cuotaAyer == None:
                 rentabilidadDiaria[f]= None

@@ -163,6 +163,9 @@
             $('#personalizadoside').append('<figure id="graficopersonalizado">'+data[1]+
                 '<figure/>');
 
+             // $('#personalizadoside').append('<figure id="histogramapersonalizado">'+data[3]+
+             //    '<figure/>');
+
 
             console.log(data[2][0]);
             var inicio = moment.parseZone(data[2][0]).format("DD-MM-YY");
@@ -182,7 +185,6 @@
             $.cachedScript( "http://kozea.github.com/pygal.js/latest/pygal-tooltips.min.js" ).done(function( script, textStatus ) {
                 console.log( textStatus );
             });
-
         })
         .fail(function() {
             console.log( "error" );

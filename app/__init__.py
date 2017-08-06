@@ -17,6 +17,12 @@ db = SQLAlchemy(app)
 from app import views, models
 from config import basedir, ADMINS, MAIL_SERVER, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD
 
+#app.debug = True
+
+if app.debug is True:
+    from flask_debugtoolbar import DebugToolbarExtension
+    toolbar = DebugToolbarExtension(app)
+
 # if app.debug:
 #     import logging
 #     from logging.handlers import SMTPHandler

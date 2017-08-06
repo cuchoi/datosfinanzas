@@ -27,5 +27,6 @@ MAIL_PASSWORD = None
 
 # administrator list
 ADMINS = ['fernando.irarrazaval@gmail.com']
+
  
 
