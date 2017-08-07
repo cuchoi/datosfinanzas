@@ -102,12 +102,22 @@ def afp(tab = "hoy"):
         rentabilidadDiaria['D'] = None
         rentabilidadDiaria['E'] = None
 
+        rentabilidadMensual['A'] = None
+        rentabilidadMensual['B'] = None
+        rentabilidadMensual['C'] = None
+        rentabilidadMensual['D'] = None
+        rentabilidadMensual['E'] = None
+
+        rentabilidadAnual['A'] = None
+        rentabilidadAnual['B'] = None
+        rentabilidadAnual['C'] = None
+        rentabilidadAnual['D'] = None
+        rentabilidadAnual['E'] = None
+
         cuotaHoyTodas = afp.cuotas.filter(Cuota.fecha == hoy).order_by(Cuota.fondo).all()
         cuotaAyerTodas = afp.cuotas.filter(Cuota.fecha == ayer).order_by(Cuota.fondo).all()
         cuotaMesTDTodas = afp.cuotas.filter(Cuota.fecha == mesTD).order_by(Cuota.fondo).all()
         cuotaAnioTDTodas = afp.cuotas.filter(Cuota.fecha == anioTD).order_by(Cuota.fondo).all()
-
-        print(cuotaHoyTodas)
 
         for cuotaHoy,cuotaAyer,cuotaMesTD,cuotaAnioTD in zip(cuotaHoyTodas, cuotaAyerTodas, cuotaMesTDTodas, cuotaAnioTDTodas):
             f = cuotaHoy.fondo
@@ -151,8 +161,6 @@ def afp(tab = "hoy"):
             'cuotaD': rentabilidadAnual['D'],
             'cuotaE': rentabilidadAnual['E']
                 })
-
-        print(afp.nombre+" "+str(rentabilidadDiaria['A']))
 
     graph_dia = crearGraficoBarraDesdeDict("Rentabilidad Diaria (%)", AFPDiaria).render()
 
