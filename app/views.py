@@ -40,14 +40,19 @@ def request_personalizado(decimales):
         AFPPersonalizado = []
 
         for afp in AFP.query.all():
+            rentabilidadPer['A'] = None
+            rentabilidadPer['B'] = None
+            rentabilidadPer['C'] = None
+            rentabilidadPer['D'] = None
+            rentabilidadPer['E'] = None
+            
             cuotaFinalTodos = afp.cuotas.filter(Cuota.fecha == final).order_by(Cuota.fondo).all()
             cuotaInicioTodos = afp.cuotas.filter(Cuota.fecha == inicio).order_by(Cuota.fondo).all()
 
             for cuotaFinal, cuotaInicio in zip(cuotaFinalTodos, cuotaInicioTodos):
                 f = cuotaFinal.fondo
-                if cuotaFinal is None or cuotaInicio is None:
-                    rentabilidadPer[f] = None
-                else:
+
+                if cuotaFinal is not None and cuotaInicio is not None:
                     rentabilidadPer[f] = round(((cuotaFinal.valor/cuotaInicio.valor)-1)*100,decimales)
 
             AFPPersonalizado.append({
@@ -122,19 +127,13 @@ def afp(tab = "hoy"):
         for cuotaHoy,cuotaAyer,cuotaMesTD,cuotaAnioTD in zip(cuotaHoyTodas, cuotaAyerTodas, cuotaMesTDTodas, cuotaAnioTDTodas):
             f = cuotaHoy.fondo
 
-            if cuotaHoy == None or cuotaAyer == None:
-                rentabilidadDiaria[f]= None
-            else:
+            if cuotaHoy is not None and cuotaAyer is not None:
                 rentabilidadDiaria[f] = round(((cuotaHoy.valor/cuotaAyer.valor)-1)*100,3)
 
-            if cuotaHoy == None or cuotaMesTD == None:
-                rentabilidadMensual[f]= None
-            else:
+            if cuotaHoy is not None and cuotaMesTD is not None:
                 rentabilidadMensual[f] = round(((cuotaHoy.valor/cuotaMesTD.valor)-1)*100,3)
 
-            if cuotaHoy == None or cuotaAnioTD == None:
-                rentabilidadAnual[f]= None
-            else:
+            if cuotaHoy is not None and cuotaAnioTD is not None:
                 rentabilidadAnual[f] = round(((cuotaHoy.valor/cuotaAnioTD.valor)-1)*100,3)
 
         AFPDiaria.append({
