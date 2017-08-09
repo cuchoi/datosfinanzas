@@ -124,9 +124,27 @@ def afp(tab = "hoy"):
         cuotaMesTDTodas = afp.cuotas.filter(Cuota.fecha == mesTD).order_by(Cuota.fondo).all()
         cuotaAnioTDTodas = afp.cuotas.filter(Cuota.fecha == anioTD).order_by(Cuota.fondo).all()
 
-        for cuotaHoy,cuotaAyer,cuotaMesTD,cuotaAnioTD in zip(cuotaHoyTodas, cuotaAyerTodas, cuotaMesTDTodas, cuotaAnioTDTodas):
-            f = cuotaHoy.fondo
+        cuotasTemporal = list()
+        index = 0
+        index2 = 0
+        while index < 5:
+            try:
+                if cuotaHoyTodas[index2].fondo is fondos[index]:
+                    cuotasTemporal.append(cuotaHoyTodas[index2])
+                else:
+                    cuotasTemporal.append(None)
+                    index2 = index2 - 1
+            except Exception as e:
+                cuotasTemporal.append(None)
 
+            index = index + 1
+            index2 = index2 + 1
+
+        cuotaHoyTodas = cuotasTemporal
+
+        for cuotaHoy,cuotaAyer,cuotaMesTD,cuotaAnioTD in zip(cuotaHoyTodas, cuotaAyerTodas, cuotaMesTDTodas, cuotaAnioTDTodas):
+            f = cuotaAyer.fondo
+      
             if cuotaHoy is not None and cuotaAyer is not None:
                 rentabilidadDiaria[f] = round(((cuotaHoy.valor/cuotaAyer.valor)-1)*100,3)
 
