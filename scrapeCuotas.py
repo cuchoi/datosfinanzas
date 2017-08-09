@@ -8,6 +8,7 @@ import locale
 from datetime import datetime, timedelta
 import requests
 import json
+from twitter import Twitter, OAuth
 
 fondos = ["A", "B", "C", "D", "E"]
 
@@ -17,6 +18,10 @@ id_afp = {'capital': 1,
           'modelo': 4,
           'planvital': 5,
           'provida': 6}
+nombres_afp = dict(zip(id_afp.values(),id_afp.keys()))
+
+guardado = False
+MsjGuardado = []
 
 def scrapeProvida(browser):
     try:
@@ -68,6 +73,8 @@ def scrapeCuprum(browser):
         print("Error Cuprum: "+str(e))
 
 def guardarCuota(fecha, closest_cuota, valorCuota, f, id_AFP, origen):
+    global guardado
+    global MsjGuardado
     dia_de_la_semana = fecha.weekday()
     dia_anterior = fecha - timedelta(days=1)
     dia_antesdeayer = fecha - timedelta(days=2)
@@ -97,12 +104,16 @@ def guardarCuota(fecha, closest_cuota, valorCuota, f, id_AFP, origen):
             print(origen+": Guardado Cuota. "+str(cuota_a_guardar))
             if finde:
                 print("Se guardó viernes desde el finde")
+            guardado = True
+            MsjGuardado.append("Nuevo Valor Cuota, "+str(fecha)+". AFP: "+nombres_afp[id_AFP].title()+". Fondo: "+f+". Valor: "+str(valorCuota))
 
         except Exception as e:
             print(origen+": ERROR: "+str(e))
             db.session.rollback()
 
 def scrapeSVS(browser):
+    global guardado
+    global MsjGuardado
     try:
         locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
         afps = AFP.query.all()
@@ -167,13 +178,14 @@ def scrapeSVS(browser):
                         db.session.add(cuota_a_guardar)
                         cuota = True
 
-
                     if cuota:
                         try:
                             db.session.commit()
                             print("Guardado Cuota: "+str(cuota_a_guardar))
                             if finde:
                                 print("Se guardó viernes desde el finde")
+                            guardado = True
+                            MsjGuardado.append("Nuevo Valor Cuota, "+str(fecha)+". AFP: "+nombres_afp[afp.id].title()+". Fondo: "+f+". Valor: "+str(valorCuota))
 
                         except Exception as e:
                             print("Duplicado u otro error: "+str(e))
@@ -190,7 +202,6 @@ def scrapeSVS(browser):
 
                     cuota = False
                     finde = False
-
 
                     if valorPatrimonio>0:
                         if(dia_de_la_semana == 5 and closest_patrimonio.fecha < dia_anterior):
@@ -221,8 +232,6 @@ def scrapeSVS(browser):
                             except Exception as e:
                                 print("Duplicado u otro error: "+str(e))
                                 continue
-                # else:
-                #     print("Esa fecha ya está: "+str(closest.fecha))
 
     except Exception as e:
         print("ERROR:"+str(e))
@@ -234,6 +243,22 @@ if __name__ == "__main__":
     scrapeCuprum(browser)
     scrapeProvida(browser)
     scrapeSVS(browser)
+
+    print(guardado)
+    print(MsjGuardado)
+
+    if guardado:
+        token = "895064451677736960-JCDhYCZ7wIztWljb9Wp36W2HXl9ZW3F"
+        token_secret = "5Fbpzl7g61ZEWFfXRxvU9Jk8en5TI8piCn7p0okOSdvX8"
+        consumer_key = "2b1fcHhGndhj3ocgZW1goGkFQ"
+        consumer_secret = "cbxMnFMQvbTPpd4OGvZyOkiAGQARuJEIf85JcxE6RkcYgUZas3"
+
+        t = Twitter(
+        auth=OAuth(token, token_secret, consumer_key, consumer_secret))
+        
+        for msj in MsjGuardado:
+            t.statuses.update(
+            status=msj)
 
     print("------------------------------------------ Terminó: "+str(datetime.now())+" -----------------------")
 
