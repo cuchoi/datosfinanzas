@@ -13,6 +13,15 @@
 
 {% endblock menu %}
 
+  {% block heroright %}
+
+   <div id="carbon" class="box"> 
+   ¿Alguna funcionalidad que <b>te encantaría</b> que implementaramos? <br>  Escríbenos a nuestro <u><a href="../contacto">formulario de contacto</a></u>
+   </div>
+
+   {% endblock heroright %}
+
+
 {% block content %}
 
   <div class="tab" id="hoy">
@@ -149,7 +158,8 @@
 	</div>
 
 	<div class="side rentabilidad" id="personalizadoside">
-		<!-- <article id="mensajediahabil" class="message is-info">
+
+		<!--<article id="mensajediahabil" class="message is-info">
 		  <div class="message-header">
 		    <p>Ojo</p>
 		    <button class="delete"></button>
@@ -168,6 +178,5 @@
 <!--  <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>-->
  <script src="{{ url_for('static', filename='js/afp.js') }}"></script> 
  <script src="{{ url_for('static', filename='js/sorttable.js') }}"></script> 
-
 {% endblock %}
 
