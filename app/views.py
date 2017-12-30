@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, request, jsonify
+from flask import render_template, flash, redirect, request, jsonify, url_for
 from app import app, db
 from .forms import LoginForm
 from .models import AFP, Cuota, Patrimonio
@@ -19,7 +19,8 @@ AFPs = ["capital", "cuprum", "habitat", "modelo", "planvital"]
 @app.route('/')
 @app.route('/index', methods=['GET'])
 def index():
-    return render_template('index.html')
+    #return render_template('index.html')
+    return redirect(url_for('afp'))
 
 @app.route('/contacto')
 def contacto():
