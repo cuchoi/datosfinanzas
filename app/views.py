@@ -12,7 +12,6 @@ import pygal
 # from flask_admin import helpers, expose
 # from werkzeug.security import generate_password_hash, check_password_hash
 
-
 fondos = ["A", "B", "C", "D", "E"]
 AFPs = ["capital", "cuprum", "habitat", "modelo", "planvital"]
 
@@ -194,6 +193,39 @@ def afp(tab = "hoy"):
                             request=request,
                             active=tab,
                             graph_dia_data = graph_dia)
+
+@app.route('/afp/graficos')
+def graficosAFP():
+    from nvd3 import cumulativeLineChart
+    import random
+    import datetime
+    import time
+
+
+    start_time = int(time.mktime(datetime.datetime(2012, 6, 1).timetuple()) * 1000)
+    nb_element = 100
+
+    name = "Rentabilidad Acumulada AFP"
+    chart = cumulativeLineChart(name=name, height=500, width=800, x_is_date=True)
+    chart.set_containerheader("\n\n<h2>" + name + "</h2>\n\n")
+
+    afps = AFP.query.all()
+    for afp in afps:
+        fechas = []
+        valorcuotas = []
+
+        for cuota in Cuota.query.filter(and_(Cuota.AFP_id == afp.id, Cuota.fondo =='A', Cuota.fecha >= "2017-01-01")).all():
+            fechas.append(int(time.mktime(cuota.fecha.timetuple()) * 1000))
+            valorcuotas.append(cuota.valor)
+
+        extra_serie = {"tooltip": {"y_start": "", "y_end": " Calls"}}
+        chart.add_serie(name=afp.nombre.title(), y=valorcuotas, x=fechas, extra=extra_serie)
+        # extra_serie = {"tooltip": {"y_start": "", "y_end": " Min"}}
+        # chart.add_serie(name="Duration", y=ydata2, x=xdata, extra=extra_serie)
+
+    chart.buildhtml()
+
+    return chart.htmlcontent
 
 @app.route('/ffmm')
 def ffmm():
