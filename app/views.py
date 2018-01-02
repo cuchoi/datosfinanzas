@@ -214,11 +214,12 @@ def graficosAFP():
         fechas = []
         valorcuotas = []
 
-        for cuota in Cuota.query.filter(and_(Cuota.AFP_id == afp.id, Cuota.fondo =='A', Cuota.fecha >= "2017-01-01")).all():
-            fechas.append(int(time.mktime(cuota.fecha.timetuple()) * 1000))
-            valorcuotas.append(cuota.valor)
+        for cuota in Cuota.query.filter(and_(Cuota.AFP_id == afp.id, Cuota.fondo =='A')).all():
+            if cuota.fecha.day == 1 or cuota.fecha.day == 10 or cuota.fecha.day == 20:
+                fechas.append(int(time.mktime(cuota.fecha.timetuple()) * 1000))
+                valorcuotas.append(cuota.valor)
 
-        extra_serie = {"tooltip": {"y_start": "", "y_end": " Calls"}}
+        extra_serie = {"tooltip": {"y_start": "", "y_end": " retorno acumulado"}}
         chart.add_serie(name=afp.nombre.title(), y=valorcuotas, x=fechas, extra=extra_serie)
         # extra_serie = {"tooltip": {"y_start": "", "y_end": " Min"}}
         # chart.add_serie(name="Duration", y=ydata2, x=xdata, extra=extra_serie)
