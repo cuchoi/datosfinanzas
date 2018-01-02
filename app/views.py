@@ -194,13 +194,12 @@ def afp(tab = "hoy"):
                             active=tab,
                             graph_dia_data = graph_dia)
 
-@app.route('/afp/graficos')
-def graficosAFP():
+@app.route('/afp/crearGraficoRentabilidadAcumulada/<json>')
+def crearGraficoRentabilidadAcumulada(json):
     from nvd3 import cumulativeLineChart
     import random
     import datetime
     import time
-
 
     start_time = int(time.mktime(datetime.datetime(2012, 6, 1).timetuple()) * 1000)
     nb_element = 100
@@ -225,8 +224,18 @@ def graficosAFP():
         # chart.add_serie(name="Duration", y=ydata2, x=xdata, extra=extra_serie)
 
     chart.buildhtml()
+    rentabilidad_acumulada = chart.htmlcontent
 
-    return chart.htmlcontent
+    if json == "json":
+        rentabilidad_acumulada = jsonify(rentabilidad_acumulada)
+
+    return rentabilidad_acumulada
+
+@app.route('/afp/graficos')
+def graficosAFP():
+    rentabilidad_acumulada = crearGraficoRentabilidadAcumulada("nojson")
+    return render_template('graficosafp.html',
+                            rentabilidad_acumulada = rentabilidad_acumulada)
 
 @app.route('/ffmm')
 def ffmm():

@@ -9,7 +9,8 @@
 <!--     <li {% if active == 'ayer' %}class="is-active"{% endif %}><a data-tab="#ayer" data-side="#ayerside">Ayer</a></li>
     <li {% if active == 'anual' %}class="is-active"{% endif %}><a data-tab="#anual" data-side="#anual side">Anual</a></li>
  -->    <li {% if active == 'personalizado' %}class="is-active"{% endif %}><a data-tab="#personalizado" data-side="#personalizadoside">Personalizado</a></li>
-       <li {% if active == 'activos' %}class="is-active"{% endif %}><a data-tab="#activos" data-side="#activosside">Activos</a></li>
+<!--        <li {% if active == 'activos' %}class="is-active"{% endif %}><a data-tab="#activos" data-side="#activosside">Activos</a></li>
+ -->       <li {% if active == 'visualizaciones' %}class="is-active"{% endif %}><a data-tab="#visualizaciones" data-side="#visualizacionesside">Visualizaciones</a></li>
 
 {% endblock menu %}
 
@@ -144,6 +145,16 @@
 
 		</tbody>
 	</table>
+	</div>
+
+
+	<div class="tab" id="visualizaciones">
+    <div class="titlewrapper">
+    <div><h3 class="title is-4">Visualizaciones&#160;&#160;</h3></div>
+	</div>
+	<br>
+    
+ 	<div id="contenidovisualizaciones"></div>
 	</div>
 
 {% endblock content %}

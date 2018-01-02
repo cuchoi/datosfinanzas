@@ -1,0 +1,19 @@
+{% extends "contenido.html" %}
+
+{% block titulo %}
+  Visualización AFP
+{% endblock titulo %}
+
+  {% block heroright %}
+
+   <div id="carbon" class="box"> 
+   ¿Alguna funcionalidad que <b>te encantaría</b> que implementaramos? <br>  Escríbenos a nuestro <u><a href="../contacto">formulario de contacto</a></u>
+   </div>
+
+ {% endblock heroright %}
+
+{% block content %}
+
+{{ rentabilidad_acumulada|safe }}
+
+{% endblock content %}
