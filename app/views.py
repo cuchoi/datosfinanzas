@@ -3,7 +3,7 @@ from app import app, db
 from .forms import LoginForm
 from .models import AFP, Cuota, Patrimonio
 from datetime import datetime, date, timedelta
-from sqlalchemy import and_, exc
+from sqlalchemy import and_, exc, distinct
 import pygal
 # from wtforms import form, fields, validators
 # import flask_admin as admin
@@ -90,6 +90,16 @@ def afp(tab = "hoy"):
     mesTD = getUltimaFechaCuota(None, hoy.replace(day=1) - timedelta(days=1))
     anioTD = getUltimaFechaCuota(None, hoy.replace(day=1).replace(month=1) - timedelta(days=1))
 
+    numeroAFPMes = Cuota.query.filter(Cuota.fecha==mesTD).group_by(Cuota.AFP_id).count()
+    numeroAFPAnio = Cuota.query.filter(Cuota.fecha==anioTD).group_by(Cuota.AFP_id).count()
+    while numeroAFPMes < 6 or numeroAFPAnio < 6:
+        if numeroAFPMes < 6:
+            mesTD = mesTD - timedelta(1)
+            numeroAFPMes = Cuota.query.filter(Cuota.fecha==mesTD).group_by(Cuota.AFP_id).count()
+        if numeroAFPAnio < 6:
+            anioTD = anioTD - timedelta(1)
+            numeroAFPAnio = Cuota.query.filter(Cuota.fecha==anioTD).group_by(Cuota.AFP_id).count()
+        
     AFPDiaria = []
     AFPMesTD = []
     AFPAnioTD = []
@@ -153,6 +163,7 @@ def afp(tab = "hoy"):
 
             if cuotaHoy is not None and cuotaAnioTD is not None:
                 rentabilidadAnual[f] = round(((cuotaHoy.valor/cuotaAnioTD.valor)-1)*100,3)
+
 
         AFPDiaria.append({
             'nombre': afp.nombre.title(),

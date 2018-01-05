@@ -205,13 +205,16 @@
      //   console.log( textStatus );
     });
 
-    $.cachedScript( "https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" ).done(function( script, textStatus ){});
-    $.cachedScript( "https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.min.js" ).done(function( script, textStatus ){});
+    $.cachedScript( "https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.min.css" ).done(function( script, textStatus ){});
+    $.cachedScript( "https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" ).done(function( script, textStatus ){    $.cachedScript( "https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.min.js" ).done(function( script, textStatus ){
 
-    $.get( "/afp/crearGraficoRentabilidadAcumulada/json",  function(data) {         
+            $.get( "/afp/crearGraficoRentabilidadAcumulada/json",  function(data) {         
                $('#contenidovisualizaciones').append(data);
-               //console.log(data);
             });
+    });});
+
+
+
 
 });
 
